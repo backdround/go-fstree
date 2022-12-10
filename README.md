@@ -30,7 +30,7 @@ configs:
 pkg:
   pkg1:
     type: link
-    destination: "../../pkg1"
+    path: "../../pkg1"
 `
 
 func main() {
