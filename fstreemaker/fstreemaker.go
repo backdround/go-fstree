@@ -66,13 +66,22 @@ func (m Maker) MakeDirectory(workDirectory string,
 		switch entry.(type) {
 		case types.FileEntry:
 			fileEntry := entry.(types.FileEntry)
-			m.makeFile(dirPath, fileEntry)
+			err := m.makeFile(dirPath, fileEntry)
+			if err != nil {
+				return err
+			}
 		case types.LinkEntry:
 			linkEntry := entry.(types.LinkEntry)
-			m.makeLink(dirPath, linkEntry)
+			err := m.makeLink(dirPath, linkEntry)
+			if err != nil {
+				return err
+			}
 		case types.DirectoryEntry:
 			directoryEntry := entry.(types.DirectoryEntry)
-			m.MakeDirectory(dirPath, directoryEntry)
+			err := m.MakeDirectory(dirPath, directoryEntry)
+			if err != nil {
+				return err
+			}
 		default:
 			panic("unknown entry type")
 		}
