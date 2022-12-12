@@ -17,9 +17,28 @@ jobs:
       - name: Run tests
         run: go test -v -coverprofile=coverage.txt -covermode=count ./...
 
-      - name: Upload coverage to codecov
-        uses: codecov/codecov-action@v2
+      - name: Upload test coverage
+        uses: actions/upload-artifact@v3
         with:
-          files: ./coverage.txt
-          fail_ci_if_error: true
-          verbose: true
+          name: coverage
+          path: ./coverage.txt
+
+  upload-codecov:
+    needs: run-tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download test coverage
+        uses: actions/download-artifact@v3
+        with:
+          name: coverage
+
+      - name: Reliable upload coverage to codecov
+        uses: Wandalen/wretry.action@v1.0.34
+        with:
+          action: codecov/codecov-action@v3
+          with: |
+            files: ./coverage.txt
+            fail_ci_if_error: true
+            verbose: true
+          attempt_limit: 3
+          attempt_delay: 1000
