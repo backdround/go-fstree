@@ -20,14 +20,14 @@ func TestRootPath(t *testing.T) {
 	t.Run("ValidRootPath", func(t *testing.T) {
 		rootEntry, err := Parse("root", "")
 
-		require.Nil(t, err)
+		require.NoError(t, err)
 		require.Equal(t, "root", rootEntry.Name)
 		require.Len(t, rootEntry.Entries, 0)
 	})
 
 	t.Run("EmptyRootPathInvalid", func(t *testing.T) {
 		_, err := Parse("", "")
-		require.NotNil(t, err)
+		require.Error(t, err)
 	})
 }
 
@@ -76,7 +76,7 @@ func TestRootEntries(t *testing.T) {
 			yaml = prepareYaml(yaml)
 
 			rootEntry, err := Parse("root", yaml)
-			require.Nil(t, err)
+			require.NoError(t, err)
 
 			// Asserts entires
 			require.Len(t, rootEntry.Entries, 1)
@@ -97,7 +97,7 @@ func TestRootEntries(t *testing.T) {
 			yaml = prepareYaml(yaml)
 
 			rootEntry, err := Parse("root", yaml)
-			require.Nil(t, err)
+			require.NoError(t, err)
 
 			// Asserts entires
 			require.Len(t, rootEntry.Entries, 1)
@@ -147,7 +147,7 @@ func TestRootEntries(t *testing.T) {
 			yaml = prepareYaml(yaml)
 
 			rootEntry, err := Parse("root", yaml)
-			require.Nil(t, err)
+			require.NoError(t, err)
 
 			// Asserts enties
 			require.Len(t, rootEntry.Entries, 1)
@@ -207,7 +207,7 @@ func TestRootEntries(t *testing.T) {
 		yaml = prepareYaml(yaml)
 
 		rootEntry, err := Parse("root", yaml)
-		require.Nil(t, err)
+		require.NoError(t, err)
 
 		// Asserts enties
 		require.Len(t, rootEntry.Entries, 1)
@@ -229,7 +229,7 @@ func TestRootEntries(t *testing.T) {
 		yaml = prepareYaml(yaml)
 
 		rootEntry, err := Parse("root", yaml)
-		require.Nil(t, err)
+		require.NoError(t, err)
 		require.Len(t, rootEntry.Entries, 2)
 
 		checkFile := func(entry interface{}) {
@@ -264,7 +264,7 @@ func TestParseInSubDirectory(t *testing.T) {
 		yaml = prepareYaml(yaml)
 
 		rootEntry, err := Parse("root", yaml)
-		require.Nil(t, err)
+		require.NoError(t, err)
 
 		// Checks directory
 		require.Len(t, rootEntry.Entries, 1)
