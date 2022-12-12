@@ -41,7 +41,7 @@ func TestRootMustBeADirectory(t *testing.T) {
 
 func TestInvalidTypeField(t *testing.T) {
 	yamlPattern := `
-		data:
+		directory:
 			type: %v
 	`
 	yamlPattern = prepareYaml(yamlPattern)
@@ -61,9 +61,29 @@ func TestInvalidTypeField(t *testing.T) {
 			yaml := fmt.Sprintf(yamlPattern, testCase.TypeData)
 			_, err := Parse("root", yaml)
 			require.Error(t, err)
-			require.Contains(t, err.Error(), "root/data")
+			require.Contains(t, err.Error(), "root/directory")
 		})
 	}
+}
+
+func TestInvalidDataStructure(t *testing.T) {
+	yaml := `
+		directory:
+			- list
+			- "is't"
+			- permitted
+	`
+	yaml = prepareYaml(yaml)
+
+	_, err := Parse("root", yaml)
+	require.Error(t, err)
+	require.Contains(t, err.Error(), "unable to convert to dictionary")
+}
+
+func TestInvalidYaml(t *testing.T) {
+	_, err := Parse("root", "\t")
+	require.Error(t, err)
+	require.Contains(t, err.Error(), "cannot start any token")
 }
 
 func TestRootEntries(t *testing.T) {
@@ -187,8 +207,8 @@ func TestRootEntries(t *testing.T) {
 
 		t.Run("ErrorUnknownField", func(t *testing.T) {
 			yaml := `
-				file.txt:
-					type: file
+				link1:
+					type: link
 					path: "../../"
 					data: "some data"
 			`
@@ -196,7 +216,7 @@ func TestRootEntries(t *testing.T) {
 
 			_, err := Parse("root", yaml)
 			require.Error(t, err)
-			require.Contains(t, err.Error(), "root/file.txt")
+			require.Contains(t, err.Error(), "unknown property")
 		})
 	})
 
