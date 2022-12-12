@@ -15,6 +15,7 @@ pkg:
 package config
 
 import (
+	"errors"
 	"fmt"
 	"path"
 
@@ -181,8 +182,7 @@ func parseLink(name string, entry rawEntry) (types.LinkEntry, *ParseError) {
 	return linkEntry, nil
 }
 
-func Parse(rootPath string, yamlData string) (*types.DirectoryEntry,
-	*ParseError) {
+func Parse(rootPath string, yamlData string) (*types.DirectoryEntry, error) {
 
 	// Checks the empty root path
 	if rootPath == "" {
@@ -192,20 +192,16 @@ func Parse(rootPath string, yamlData string) (*types.DirectoryEntry,
 		}
 		return nil, err
 	}
-	presetError := &ParseError{Path: rootPath}
-
 	// Unmarshales to a rawTree
 	rawTree := make(rawEntry)
 	yamlErr := yaml.Unmarshal([]byte(yamlData), rawTree)
 	if yamlErr != nil {
-		presetError.Message = yamlErr.Error()
-		return nil, presetError
+		return nil, yamlErr
 	}
 
 	// Checks that a root type property doesn't exist
 	if _, ok := rawTree["type"]; ok {
-		presetError.Message = `unexpected "type" property at root`
-		return nil, presetError
+		return nil, errors.New(`unexpected "type" property at root`)
 	}
 
 	// Parses the root directory
