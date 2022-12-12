@@ -42,7 +42,7 @@ func Make(fs types.FS, rootPath string, yamlData string) error {
 	maker := fstreemaker.Maker{
 		Fs: fs,
 	}
-	err = maker.MakeDirectory(rootPath, *directoryEntry)
+	err = maker.MakeDirectory("", *directoryEntry)
 	return err
 }
 
