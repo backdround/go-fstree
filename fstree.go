@@ -3,6 +3,7 @@ package fstree
 import (
 	"github.com/backdround/go-fstree/config"
 	"github.com/backdround/go-fstree/fstreemaker"
+	"github.com/backdround/go-fstree/osfs"
 	"github.com/backdround/go-fstree/types"
 )
 
@@ -43,4 +44,11 @@ func Make(fs types.FS, rootPath string, yamlData string) error {
 	}
 	err = maker.MakeDirectory(rootPath, *directoryEntry)
 	return err
+}
+
+// MakeOverOSFS makes the same thing as Make, but uses the
+// real filesystem
+func MakeOverOSFS(rootPath string, yamlData string) error {
+	fs := osfs.OsFS{}
+	return Make(fs, rootPath, yamlData)
 }
