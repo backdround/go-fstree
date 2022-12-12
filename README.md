@@ -2,6 +2,7 @@
 [![Tests](https://img.shields.io/github/workflow/status/backdround/go-fstree/tests?label=tests&style=flat-square)](https://github.com/backdround/go-fstree/actions)
 [![Codecov](https://img.shields.io/codecov/c/github/backdround/go-fstree?style=flat-square)](https://app.codecov.io/gh/backdround/go-fstree/)
 [![Go Report](https://goreportcard.com/badge/github.com/backdround/go-fstree?style=flat-square)](https://goreportcard.com/report/github.com/backdround/go-fstree)
+
 # FSTree
 
 FSTree makes a filesystem tree from a given yaml definition. This
@@ -19,8 +20,8 @@ go get github.com/backdround/go-fstree
 package main
 
 import (
-  "strings"
-  "github.com/backdround/go-fstree"
+	"strings"
+	"github.com/backdround/go-fstree"
 )
 
 var fstreeYaml =`
@@ -38,13 +39,13 @@ pkg:
 `
 
 func main() {
-  fstreeYaml = strings.ReplaceAll(fstreeYaml, "\t", "  ")
-
-  // Creates filesystem tree in ./project
-  err := fstree.Make("./project", fstreeYaml)
-
-  if err != nil {
-    log.Fatal(err)
-  }
+	fstreeYaml = strings.ReplaceAll(fstreeYaml, "\t", "  ")
+	
+	// Creates filesystem tree in ./project
+	err := fstree.MakeOverOSFS("./project", fstreeYaml)
+	
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 ```
