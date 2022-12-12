@@ -1,3 +1,17 @@
+// Package config parses user config to abstract fs node structure.
+// For exapmle:
+//
+// configs:
+//   "config1.txt":
+//     type: file
+//     data: "format: txt"
+// pkg:
+//   pkg1:
+//     type: link
+//     path: "../../pkg1"
+//
+// will be parsed in an appropriate node tree structure based with
+// types.DirectoryEntry type.
 package config
 
 import (
