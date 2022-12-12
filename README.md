@@ -49,3 +49,36 @@ func main() {
 	}
 }
 ```
+
+### FS Entries
+
+#### Directory
+```yaml
+depth0:
+  # No type field is setted
+  depth1:
+    # No type field is setted
+    depth2:
+      # No type field is setted
+```
+creates `ROOTPATH/depth0/depth1/depath2` directory
+
+#### File
+```yaml
+file1.txt:
+  # type is required
+  type: file
+  # data is optinal
+  data: some file data
+```
+creates file `ROOTPATH/file1.txt` with data `some file data`
+
+#### Link
+```yaml
+link1:
+  # type is reqired
+  type: link
+  # path is required
+  path: ./some/destination
+```
+creates link `ROOTPATH/link1` with destination `./some/destination`
