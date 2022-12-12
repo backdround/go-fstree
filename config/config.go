@@ -112,6 +112,7 @@ func parseFile(name string, entry rawEntry) (types.FileEntry, *ParseError) {
 	// A constructed entry
 	fileEntry := types.FileEntry{
 		Name: name,
+		Data: []byte{},
 	}
 
 	// Parses file properties
@@ -124,7 +125,7 @@ func parseFile(name string, entry rawEntry) (types.FileEntry, *ParseError) {
 					valueAny)
 				return errorResult(message)
 			}
-			fileEntry.Data = value
+			fileEntry.Data = []byte(value)
 		default:
 			return errorResult("unknown property: " + name)
 		}

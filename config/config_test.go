@@ -85,7 +85,7 @@ func TestRootEntries(t *testing.T) {
 			// Asserts file
 			file := rootEntry.Entries[0].(types.FileEntry)
 			require.Equal(t, "file.txt", file.Name)
-			require.Equal(t, "", file.Data)
+			require.Equal(t, []byte{}, file.Data)
 		})
 
 		t.Run("WithData", func(t *testing.T) {
@@ -106,7 +106,7 @@ func TestRootEntries(t *testing.T) {
 			// Asserts file
 			file := rootEntry.Entries[0].(types.FileEntry)
 			require.Equal(t, "file.txt", file.Name)
-			require.Equal(t, "some data", file.Data)
+			require.Equal(t, []byte("some data"), file.Data)
 		})
 
 		t.Run("ErrorInvalidDataType", func(t *testing.T) {
@@ -235,7 +235,7 @@ func TestRootEntries(t *testing.T) {
 		checkFile := func(entry interface{}) {
 			file := entry.(types.FileEntry)
 			require.Equal(t, "file.txt", file.Name)
-			require.Equal(t, "some data", file.Data)
+			require.Equal(t, []byte("some data"), file.Data)
 		}
 
 		checkDirectory := func(entry interface{}) {
@@ -277,7 +277,7 @@ func TestParseInSubDirectory(t *testing.T) {
 		require.IsType(t, types.FileEntry{}, newDirectory.Entries[0])
 		file := newDirectory.Entries[0].(types.FileEntry)
 		require.Equal(t, "file.txt", file.Name)
-		require.Equal(t, "some data", file.Data)
+		require.Equal(t, []byte("some data"), file.Data)
 	})
 
 	t.Run("InvalidLink", func(t *testing.T) {

@@ -7,7 +7,7 @@ type DirectoryEntry struct {
 
 type FileEntry struct {
 	Name string
-	Data string
+	Data []byte
 }
 
 type LinkEntry struct {
