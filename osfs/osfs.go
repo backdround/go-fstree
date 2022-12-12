@@ -6,7 +6,7 @@ type OsFS struct{}
 
 func (OsFS) IsExist(path string) bool {
 	_, err := os.Lstat(path)
-	return os.IsNotExist(err)
+	return !os.IsNotExist(err)
 }
 
 func (OsFS) IsFile(path string) bool {
