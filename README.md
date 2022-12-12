@@ -20,22 +20,24 @@ go get github.com/backdround/go-fstree
 package main
 
 import (
+	"log"
 	"strings"
+
 	"github.com/backdround/go-fstree"
 )
 
 var fstreeYaml =`
 configs:
-  "config1.txt":
+  config1.txt:
     type: file
     data: "format: txt"
-  "config2.txt":
+  config2.txt:
     type: file
     data: "format: yaml"
 pkg:
   pkg1:
     type: link
-    path: "../../pkg1"
+    path: ../../pkg1
 `
 
 func main() {
