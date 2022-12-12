@@ -156,3 +156,40 @@ func TestDirectoryCreation(t *testing.T) {
 	require.NoError(t, err)
 	require.True(t, pathInfo.IsDir())
 }
+
+func TestSubdirectory(t *testing.T) {
+	yamlData :=`
+		new-directory:
+			file.txt:
+				type: file
+			link:
+				type: link
+				path: ./file.txt
+			subdirectory:
+	`
+	yamlData = prepareYaml(yamlData)
+
+	root, clean := createRoot()
+	defer clean()
+
+	err := fstree.MakeOverOSFS(root, yamlData)
+	require.NoError(t, err)
+
+	// Checks file
+	filePath := path.Join(root, "new-directory", "file.txt")
+	data, err := os.ReadFile(filePath)
+	require.NoError(t, err)
+	require.Empty(t, data)
+
+	// Checks link
+	linkPath := path.Join(root, "new-directory", "link")
+	linkDestination, err := os.Readlink(linkPath)
+	require.NoError(t, err)
+	require.Equal(t, "./file.txt", linkDestination)
+
+	// Checks subdirectory
+	subdirectoryPath := path.Join(root, "new-directory", "subdirectory")
+	directoryInfo, err := os.Lstat(subdirectoryPath)
+	require.NoError(t, err)
+	require.True(t, directoryInfo.IsDir())
+}
