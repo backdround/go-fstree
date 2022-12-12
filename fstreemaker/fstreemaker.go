@@ -9,7 +9,7 @@ import (
 )
 
 type Maker struct {
-	fs types.FS
+	Fs types.FS
 }
 
 // makeFile creates a file in the workDirectory. It skips if file with the
@@ -17,8 +17,8 @@ type Maker struct {
 func (m Maker) makeFile(workDirectory string, file types.FileEntry) error {
 	filePath := path.Join(workDirectory, file.Name)
 
-	if m.fs.IsFile(filePath) {
-		data, err := m.fs.ReadFile(filePath)
+	if m.Fs.IsFile(filePath) {
+		data, err := m.Fs.ReadFile(filePath)
 		if err != nil {
 			return err
 		}
@@ -28,11 +28,11 @@ func (m Maker) makeFile(workDirectory string, file types.FileEntry) error {
 		return nil
 	}
 
-	if m.fs.IsExist(filePath) {
+	if m.Fs.IsExist(filePath) {
 		return fmt.Errorf("filepath %q already exists", filePath)
 	}
 
-	return m.fs.WriteFile(filePath, file.Data)
+	return m.Fs.WriteFile(filePath, file.Data)
 }
 
 // makeLink creates link in workDirectory. Gives a error if by the
@@ -40,11 +40,11 @@ func (m Maker) makeFile(workDirectory string, file types.FileEntry) error {
 func (m Maker) makeLink(workDirectory string, link types.LinkEntry) error {
 	linkPath := path.Join(workDirectory, link.Name)
 
-	if m.fs.IsExist(linkPath) {
+	if m.Fs.IsExist(linkPath) {
 		return fmt.Errorf("filepath %q already exists", linkPath)
 	}
 
-	return m.fs.Symlink(link.Path, linkPath)
+	return m.Fs.Symlink(link.Path, linkPath)
 }
 
 // makeDirectory creates directory in workDirectory
@@ -53,12 +53,12 @@ func (m Maker) MakeDirectory(workDirectory string,
 	dirPath := path.Join(workDirectory, directory.Name)
 
 	// Creates current directory
-	if !m.fs.IsDirectory(dirPath) {
-		if m.fs.IsExist(dirPath) {
+	if !m.Fs.IsDirectory(dirPath) {
+		if m.Fs.IsExist(dirPath) {
 			return fmt.Errorf("filepath %q already exists", dirPath)
 		}
 
-		m.fs.Mkdir(dirPath)
+		m.Fs.Mkdir(dirPath)
 	}
 
 	// Creates directory entries

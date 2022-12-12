@@ -41,7 +41,7 @@ func main() {
   fstreeYaml = strings.ReplaceAll(fstreeYaml, "\t", "  ")
 
   // Creates filesystem tree in ./project
-  err = fstree.Make("./project", fstreeYaml)
+  err := fstree.Make("./project", fstreeYaml)
 
   if err != nil {
     log.Fatal(err)
