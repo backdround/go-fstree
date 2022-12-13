@@ -23,20 +23,20 @@ type FS interface {
 }
 
 // Make makes filesystem tree in rootPath from yamlData.
-// For example with yaml data:
-/*
-configs:
-  "config1.txt":
-    type: file
-    data: "format: txt"
-pkg:
-  pkg1:
-    type: link
-    path: "../../pkg1"
-*/
+// For example:
+//
+//	configs:
+//	  "config1.txt":
+//	    type: file
+//	    data: "format: txt"
+//	pkg:
+//	  pkg1:
+//	    type: link
+//	    path: "../../pkg1"
+//
 // The function creates:
-// - ./configs/config1.txt (file with data "format: txt")
-// - ./pkg/pkg1 (link points to "../../pkg1")
+//   - ./configs/config1.txt (file with data "format: txt")
+//   - ./pkg/pkg1 (link points to "../../pkg1")
 func Make(fs FS, rootPath string, yamlData string) error {
 	var err error
 	// Parses config
