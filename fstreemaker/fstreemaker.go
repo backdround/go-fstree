@@ -1,3 +1,4 @@
+// Package fstreemaker makes filesystem tree by passed filesystem entries
 package fstreemaker
 
 import (

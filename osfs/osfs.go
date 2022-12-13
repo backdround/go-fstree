@@ -1,3 +1,4 @@
+// Package osfs describes OsFS type that implements tyes.FS interface
 package osfs
 
 import "os"
