@@ -1,4 +1,4 @@
-package fstreemaker
+package entries
 
 type DirectoryEntry struct {
 	Name    string

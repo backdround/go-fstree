@@ -1,4 +1,4 @@
-package fstreemaker
+package maker
 
 import (
 	"os"
@@ -7,6 +7,8 @@ import (
 
 	"github.com/backdround/go-fstree/osfs"
 	"github.com/stretchr/testify/require"
+
+	"github.com/backdround/go-fstree/entries"
 )
 
 func assertNoError(err error) {
@@ -39,10 +41,10 @@ func TestFileCreationCornerCases(t *testing.T) {
 		rootPath, clean := createRoot()
 		defer clean()
 
-		rootEntry := DirectoryEntry{
+		rootEntry := entries.DirectoryEntry{
 			Name: rootPath,
 			Entries: []any{
-				FileEntry{
+				entries.FileEntry{
 					Name: "file.txt",
 					Data: []byte("some data"),
 				},
@@ -64,10 +66,10 @@ func TestFileCreationCornerCases(t *testing.T) {
 		rootPath, clean := createRoot()
 		defer clean()
 
-		rootEntry := DirectoryEntry{
+		rootEntry := entries.DirectoryEntry{
 			Name: rootPath,
 			Entries: []any{
-				FileEntry{
+				entries.FileEntry{
 					Name: "file.txt",
 					Data: []byte("some data"),
 				},
@@ -90,10 +92,10 @@ func TestLinkCreationCornerCases(t *testing.T) {
 		rootPath, clean := createRoot()
 		defer clean()
 
-		rootEntry := DirectoryEntry{
+		rootEntry := entries.DirectoryEntry{
 			Name: rootPath,
 			Entries: []any{
-				LinkEntry{
+				entries.LinkEntry{
 					Name: "link1",
 					Path: "./file.txt",
 				},
@@ -115,10 +117,10 @@ func TestLinkCreationCornerCases(t *testing.T) {
 		rootPath, clean := createRoot()
 		defer clean()
 
-		rootEntry := DirectoryEntry{
+		rootEntry := entries.DirectoryEntry{
 			Name: rootPath,
 			Entries: []any{
-				LinkEntry{
+				entries.LinkEntry{
 					Name: "link1",
 					Path: "./file.txt",
 				},
@@ -140,10 +142,10 @@ func TestLinkCreationCornerCases(t *testing.T) {
 		rootPath, clean := createRoot()
 		defer clean()
 
-		rootEntry := DirectoryEntry{
+		rootEntry := entries.DirectoryEntry{
 			Name: rootPath,
 			Entries: []any{
-				LinkEntry{
+				entries.LinkEntry{
 					Name: "link1",
 					Path: "./file.txt",
 				},
@@ -166,10 +168,10 @@ func TestDirectoryCreationCornerCases(t *testing.T) {
 		rootPath, clean := createRoot()
 		defer clean()
 
-		rootEntry := DirectoryEntry{
+		rootEntry := entries.DirectoryEntry{
 			Name: rootPath,
 			Entries: []any{
-				DirectoryEntry{
+				entries.DirectoryEntry{
 					Name:    "new-directory",
 					Entries: []any{},
 				},
@@ -191,10 +193,10 @@ func TestDirectoryCreationCornerCases(t *testing.T) {
 		rootPath, clean := createRoot()
 		defer clean()
 
-		rootEntry := DirectoryEntry{
+		rootEntry := entries.DirectoryEntry{
 			Name: rootPath,
 			Entries: []any{
-				DirectoryEntry{
+				entries.DirectoryEntry{
 					Name:    "new-directory",
 					Entries: []any{},
 				},
