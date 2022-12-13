@@ -57,7 +57,7 @@ func TestFileCreationCornerCases(t *testing.T) {
 		assertNoError(err)
 
 		// Tests
-		err = GetOsMaker().MakeDirectory("", rootEntry)
+		err = GetOsMaker().Make(rootEntry)
 		require.Error(t, err)
 		require.Contains(t, err.Error(), "already exists")
 	})
@@ -82,7 +82,7 @@ func TestFileCreationCornerCases(t *testing.T) {
 		assertNoError(err)
 
 		// Tests
-		err = GetOsMaker().MakeDirectory("", rootEntry)
+		err = GetOsMaker().Make(rootEntry)
 		require.NoError(t, err)
 	})
 }
@@ -108,7 +108,7 @@ func TestLinkCreationCornerCases(t *testing.T) {
 		assertNoError(err)
 
 		// Tests
-		err = GetOsMaker().MakeDirectory("", rootEntry)
+		err = GetOsMaker().Make(rootEntry)
 		require.Error(t, err)
 		require.Contains(t, err.Error(), "already exists")
 	})
@@ -133,7 +133,7 @@ func TestLinkCreationCornerCases(t *testing.T) {
 		assertNoError(err)
 
 		// Tests
-		err = GetOsMaker().MakeDirectory("", rootEntry)
+		err = GetOsMaker().Make(rootEntry)
 		require.Error(t, err)
 		require.Contains(t, err.Error(), "already exists")
 	})
@@ -158,7 +158,7 @@ func TestLinkCreationCornerCases(t *testing.T) {
 		assertNoError(err)
 
 		// Tests
-		err = GetOsMaker().MakeDirectory("", rootEntry)
+		err = GetOsMaker().Make(rootEntry)
 		require.NoError(t, err)
 	})
 }
@@ -184,7 +184,7 @@ func TestDirectoryCreationCornerCases(t *testing.T) {
 		assertNoError(err)
 
 		// Tests
-		err = GetOsMaker().MakeDirectory("", rootEntry)
+		err = GetOsMaker().Make(rootEntry)
 		require.Error(t, err)
 		require.Contains(t, err.Error(), "already exists")
 	})
@@ -209,7 +209,7 @@ func TestDirectoryCreationCornerCases(t *testing.T) {
 		assertNoError(err)
 
 		// Tests
-		err = GetOsMaker().MakeDirectory("", rootEntry)
+		err = GetOsMaker().Make(rootEntry)
 		require.NoError(t, err)
 	})
 }

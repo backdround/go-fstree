@@ -57,7 +57,7 @@ func Make(fs FS, rootPath string, yamlData string) error {
 	maker := maker.Maker{
 		Fs: fs,
 	}
-	err = maker.MakeDirectory("", *directoryEntry)
+	err = maker.Make(*directoryEntry)
 	return err
 }
 

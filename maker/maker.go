@@ -13,6 +13,12 @@ type Maker struct {
 	Fs FS
 }
 
+// Make creates fstree structure.
+func (m Maker) Make(directory entries.DirectoryEntry) error {
+	return m.makeDirectory("", directory)
+}
+
+
 // makeFile creates a file in the workDirectory. It skips if file with the
 // same data exists. Gives a error if by the filepath something exists.
 func (m Maker) makeFile(workDirectory string, file entries.FileEntry) error {
@@ -67,7 +73,7 @@ func (m Maker) makeLink(workDirectory string, link entries.LinkEntry) error {
 }
 
 // makeDirectory creates directory in workDirectory
-func (m Maker) MakeDirectory(workDirectory string,
+func (m Maker) makeDirectory(workDirectory string,
 	directory entries.DirectoryEntry) error {
 	dirPath := path.Join(workDirectory, directory.Name)
 
@@ -100,7 +106,7 @@ func (m Maker) MakeDirectory(workDirectory string,
 			}
 		case entries.DirectoryEntry:
 			directoryEntry := entry.(entries.DirectoryEntry)
-			err := m.MakeDirectory(dirPath, directoryEntry)
+			err := m.makeDirectory(dirPath, directoryEntry)
 			if err != nil {
 				return err
 			}
