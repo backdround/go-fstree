@@ -18,6 +18,15 @@ func (OsFS) IsFile(path string) bool {
 	return fileInfo.Mode().IsRegular()
 }
 
+func (OsFS) IsLink(path string) bool {
+	pathInfo, err := os.Lstat(path)
+	if os.IsNotExist(err) {
+		return false
+	}
+
+	return (pathInfo.Mode() & os.ModeSymlink) == os.ModeSymlink
+}
+
 func (OsFS) IsDirectory(path string) bool {
 	fileInfo, err := os.Lstat(path)
 	if os.IsNotExist(err) {
@@ -29,6 +38,10 @@ func (OsFS) IsDirectory(path string) bool {
 
 func (OsFS) ReadFile(path string) ([]byte, error) {
 	return os.ReadFile(path)
+}
+
+func (OsFS) Readlink(path string) (string, error) {
+	return os.Readlink(path)
 }
 
 func (OsFS) WriteFile(path string, data []byte) error {

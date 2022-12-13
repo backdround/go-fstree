@@ -40,11 +40,29 @@ func (m Maker) makeFile(workDirectory string, file types.FileEntry) error {
 func (m Maker) makeLink(workDirectory string, link types.LinkEntry) error {
 	linkPath := path.Join(workDirectory, link.Name)
 
-	if m.Fs.IsExist(linkPath) {
+	if !m.Fs.IsExist(linkPath) {
+		return m.Fs.Symlink(link.Path, linkPath)
+	}
+
+	if !m.Fs.IsLink(linkPath) {
 		return fmt.Errorf("filepath %q already exists", linkPath)
 	}
 
-	return m.Fs.Symlink(link.Path, linkPath)
+	existingLinkDestination, err := m.Fs.Readlink(linkPath)
+	if err != nil {
+		return err
+	}
+
+	matched, err := path.Match(existingLinkDestination, link.Path)
+	if err != nil {
+		panic(err)
+	}
+
+	if !matched {
+		return fmt.Errorf("link %q already exists", linkPath)
+	}
+
+	return nil
 }
 
 // makeDirectory creates directory in workDirectory

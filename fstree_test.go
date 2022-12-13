@@ -193,3 +193,24 @@ func TestSubdirectory(t *testing.T) {
 	require.NoError(t, err)
 	require.True(t, directoryInfo.IsDir())
 }
+
+func TestSubdirectoryIdempotency(t *testing.T) {
+	yamlData :=`
+		new-directory:
+			file.txt:
+				type: file
+			link:
+				type: link
+				path: ./file.txt
+			subdirectory:
+	`
+	yamlData = prepareYaml(yamlData)
+
+	root, clean := createRoot()
+	defer clean()
+
+	err := fstree.MakeOverOSFS(root, yamlData)
+	require.NoError(t, err)
+	err = fstree.MakeOverOSFS(root, yamlData)
+	require.NoError(t, err)
+}
