@@ -1,3 +1,4 @@
+// Package fstree creates a filesystem tree structure from the passed yaml.
 package fstree
 
 import (

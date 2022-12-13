@@ -1,4 +1,5 @@
-// Package osfs describes OsFS type that implements tyes.FS interface
+// Package osfs describes OsFS type that implements work with
+// filesystem by os package.
 package osfs
 
 import "os"
