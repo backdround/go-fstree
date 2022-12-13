@@ -52,6 +52,16 @@ func main() {
 }
 ```
 
+It creates the following structure:
+```
+project
+├── configs
+│   ├── config1.txt
+│   └── config2.txt
+└── pkg
+    └── pkg1 -> ../../pkg1
+```
+
 ### FS Entries
 
 #### Directory
