@@ -1,5 +1,5 @@
-// Package fstreemaker makes filesystem tree by passed filesystem entries
-package fstreemaker
+// Package maker makes filesystem tree by passed filesystem entries
+package maker
 
 import (
 	"bytes"

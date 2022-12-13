@@ -1,4 +1,4 @@
-package fstreemaker
+package maker
 
 type FS interface {
 	IsExist(path string) bool

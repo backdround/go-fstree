@@ -1,4 +1,4 @@
-package fstreemaker
+package maker
 
 import (
 	"os"

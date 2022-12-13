@@ -3,7 +3,7 @@ package fstree
 
 import (
 	"github.com/backdround/go-fstree/config"
-	"github.com/backdround/go-fstree/fstreemaker"
+	"github.com/backdround/go-fstree/maker"
 	"github.com/backdround/go-fstree/osfs"
 )
 
@@ -54,7 +54,7 @@ func Make(fs FS, rootPath string, yamlData string) error {
 	}
 
 	// Creates fs tree
-	maker := fstreemaker.Maker{
+	maker := maker.Maker{
 		Fs: fs,
 	}
 	err = maker.MakeDirectory("", *directoryEntry)
