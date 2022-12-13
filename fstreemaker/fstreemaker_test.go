@@ -36,7 +36,7 @@ func GetOsMaker() Maker {
 }
 
 func TestFileCreationCornerCases(t *testing.T) {
-	t.Run("ErrorOnAnotherFileAlreadyExists", func (t *testing.T) {
+	t.Run("ErrorOnAnotherFileAlreadyExists", func(t *testing.T) {
 		rootPath, clean := createRoot()
 		defer clean()
 
@@ -61,7 +61,7 @@ func TestFileCreationCornerCases(t *testing.T) {
 		require.Contains(t, err.Error(), "already exists")
 	})
 
-	t.Run("SkipOnSameFileAlreadyExists", func (t *testing.T) {
+	t.Run("SkipOnSameFileAlreadyExists", func(t *testing.T) {
 		rootPath, clean := createRoot()
 		defer clean()
 
@@ -87,7 +87,7 @@ func TestFileCreationCornerCases(t *testing.T) {
 }
 
 func TestLinkCreationCornerCases(t *testing.T) {
-	t.Run("ErrorOnFileAlreadyExists", func (t *testing.T) {
+	t.Run("ErrorOnFileAlreadyExists", func(t *testing.T) {
 		rootPath, clean := createRoot()
 		defer clean()
 
@@ -112,7 +112,7 @@ func TestLinkCreationCornerCases(t *testing.T) {
 		require.Contains(t, err.Error(), "already exists")
 	})
 
-	t.Run("ErrorOnAnotherLinkAlreadyExists", func (t *testing.T) {
+	t.Run("ErrorOnAnotherLinkAlreadyExists", func(t *testing.T) {
 		rootPath, clean := createRoot()
 		defer clean()
 
@@ -137,7 +137,7 @@ func TestLinkCreationCornerCases(t *testing.T) {
 		require.Contains(t, err.Error(), "already exists")
 	})
 
-	t.Run("SkipOnSameLinkExists", func (t *testing.T) {
+	t.Run("SkipOnSameLinkExists", func(t *testing.T) {
 		rootPath, clean := createRoot()
 		defer clean()
 
@@ -163,7 +163,7 @@ func TestLinkCreationCornerCases(t *testing.T) {
 }
 
 func TestDirectoryCreationCornerCases(t *testing.T) {
-	t.Run("ErrorOnFileAlreadyExists", func (t *testing.T) {
+	t.Run("ErrorOnFileAlreadyExists", func(t *testing.T) {
 		rootPath, clean := createRoot()
 		defer clean()
 
@@ -171,7 +171,7 @@ func TestDirectoryCreationCornerCases(t *testing.T) {
 			Name: rootPath,
 			Entries: []any{
 				types.DirectoryEntry{
-					Name: "new-directory",
+					Name:    "new-directory",
 					Entries: []any{},
 				},
 			},
@@ -188,7 +188,7 @@ func TestDirectoryCreationCornerCases(t *testing.T) {
 		require.Contains(t, err.Error(), "already exists")
 	})
 
-	t.Run("SkipOnAlreadyExists", func (t *testing.T) {
+	t.Run("SkipOnAlreadyExists", func(t *testing.T) {
 		rootPath, clean := createRoot()
 		defer clean()
 
@@ -196,7 +196,7 @@ func TestDirectoryCreationCornerCases(t *testing.T) {
 			Name: rootPath,
 			Entries: []any{
 				types.DirectoryEntry{
-					Name: "new-directory",
+					Name:    "new-directory",
 					Entries: []any{},
 				},
 			},

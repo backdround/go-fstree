@@ -43,7 +43,7 @@ func createRoot() (rootPath string, clean func()) {
 // Tests
 
 func TestEmptyRoot(t *testing.T) {
-	yamlData :=`file.txt: {type: "file", data: "data"}`
+	yamlData := `file.txt: {type: "file", data: "data"}`
 
 	err := fstree.MakeOverOSFS("", yamlData)
 	require.Error(t, err)
@@ -68,7 +68,7 @@ func TestErrorOnPathAlreadyExists(t *testing.T) {
 		root, clean := createRoot()
 		defer clean()
 
-		yamlData :=`
+		yamlData := `
 			file.txt:
 				type: file
 				data: some data
@@ -90,7 +90,7 @@ func TestErrorOnPathAlreadyExists(t *testing.T) {
 		root, clean := createRoot()
 		defer clean()
 
-		yamlData :=`
+		yamlData := `
 			link1:
 				type: link
 				path: ./file.txt
@@ -111,7 +111,7 @@ func TestErrorOnPathAlreadyExists(t *testing.T) {
 
 func TestFileCreation(t *testing.T) {
 	t.Run("Empty", func(t *testing.T) {
-		yamlData :=`
+		yamlData := `
 			file.txt:
 				type: file
 		`
@@ -130,7 +130,7 @@ func TestFileCreation(t *testing.T) {
 	})
 
 	t.Run("WithData", func(t *testing.T) {
-		yamlData :=`
+		yamlData := `
 			file.txt:
 				type: file
 				data: some data
@@ -150,7 +150,7 @@ func TestFileCreation(t *testing.T) {
 	})
 
 	t.Run("InvalidData", func(t *testing.T) {
-		yamlData :=`
+		yamlData := `
 			file.txt:
 				type: file
 				data:
@@ -168,7 +168,7 @@ func TestFileCreation(t *testing.T) {
 
 func TestLinkCreation(t *testing.T) {
 	t.Run("Valid", func(t *testing.T) {
-		yamlData :=`
+		yamlData := `
 			link:
 				type: link
 				path: "./destination"
@@ -188,7 +188,7 @@ func TestLinkCreation(t *testing.T) {
 	})
 
 	t.Run("Invalid", func(t *testing.T) {
-		yamlData :=`
+		yamlData := `
 			link:
 				type: link
 		`
@@ -203,7 +203,7 @@ func TestLinkCreation(t *testing.T) {
 }
 
 func TestDirectoryCreation(t *testing.T) {
-	yamlData :=`directory:`
+	yamlData := `directory:`
 
 	root, clean := createRoot()
 	defer clean()
@@ -218,7 +218,7 @@ func TestDirectoryCreation(t *testing.T) {
 }
 
 func TestSubdirectory(t *testing.T) {
-	yamlData :=`
+	yamlData := `
 		new-directory:
 			file.txt:
 				type: file
@@ -255,7 +255,7 @@ func TestSubdirectory(t *testing.T) {
 }
 
 func TestSubdirectoryIdempotency(t *testing.T) {
-	yamlData :=`
+	yamlData := `
 		new-directory:
 			file.txt:
 				type: file
