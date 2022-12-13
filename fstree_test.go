@@ -49,6 +49,20 @@ func TestEmptyRoot(t *testing.T) {
 	require.Error(t, err)
 }
 
+func TestRootDoesntExist(t *testing.T) {
+	root, clean := createRoot()
+	clean()
+
+	err := fstree.MakeOverOSFS(root, ``)
+	require.NoError(t, err)
+
+	// Checks that fstree created the root directory
+	pathInfo, err := os.Lstat(root)
+	require.NoError(t, err)
+	require.True(t, pathInfo.IsDir())
+	clean()
+}
+
 func TestErrorOnPathAlreadyExists(t *testing.T) {
 	t.Run("File", func(t *testing.T) {
 		root, clean := createRoot()
