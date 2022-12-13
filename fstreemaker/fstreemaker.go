@@ -5,12 +5,10 @@ import (
 	"bytes"
 	"fmt"
 	"path"
-
-	"github.com/backdround/go-fstree/types"
 )
 
 type Maker struct {
-	Fs types.FS
+	Fs FS
 }
 
 // makeFile creates a file in the workDirectory. It skips if file with the

@@ -4,8 +4,22 @@ import (
 	"github.com/backdround/go-fstree/config"
 	"github.com/backdround/go-fstree/fstreemaker"
 	"github.com/backdround/go-fstree/osfs"
-	"github.com/backdround/go-fstree/types"
 )
+
+// FS describes required interface for work with filesystem.
+// In the most cases it copies os package signatures.
+type FS interface {
+	IsExist(path string) bool
+	IsFile(path string) bool
+	IsLink(path string) bool
+	IsDirectory(path string) bool
+
+	ReadFile(path string) ([]byte, error)
+	Readlink(path string) (string, error)
+	WriteFile(path string, data []byte) error
+	Symlink(oldPath, newPath string) error
+	Mkdir(path string) error
+}
 
 // Make makes filesystem tree in rootPath from yamlData.
 // For example with yaml data:
@@ -22,7 +36,7 @@ pkg:
 // The function creates:
 // - ./configs/config1.txt (file with data "format: txt")
 // - ./pkg/pkg1 (link points to "../../pkg1")
-func Make(fs types.FS, rootPath string, yamlData string) error {
+func Make(fs FS, rootPath string, yamlData string) error {
 	var err error
 	// Parses config
 	directoryEntry, err := config.Parse(rootPath, yamlData)
