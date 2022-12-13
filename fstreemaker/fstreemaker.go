@@ -76,7 +76,10 @@ func (m Maker) MakeDirectory(workDirectory string,
 			return fmt.Errorf("filepath %q already exists", dirPath)
 		}
 
-		m.Fs.Mkdir(dirPath)
+		err := m.Fs.Mkdir(dirPath)
+		if err != nil {
+			return err
+		}
 	}
 
 	// Creates directory entries
