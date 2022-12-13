@@ -49,6 +49,52 @@ func TestEmptyRoot(t *testing.T) {
 	require.Error(t, err)
 }
 
+func TestErrorOnPathAlreadyExists(t *testing.T) {
+	t.Run("File", func(t *testing.T) {
+		root, clean := createRoot()
+		defer clean()
+
+		yamlData :=`
+			file.txt:
+				type: file
+				data: some data
+		`
+		yamlData = prepareYaml(yamlData)
+
+		// Creates a file with another data
+		existingFilePath := path.Join(root, "file.txt")
+		err := os.WriteFile(existingFilePath, []byte("another data"), 0644)
+		assertNoError(err)
+
+		// Tests
+		err = fstree.MakeOverOSFS(root, yamlData)
+		require.Error(t, err)
+		require.Contains(t, err.Error(), "already exists")
+	})
+
+	t.Run("Link", func(t *testing.T) {
+		root, clean := createRoot()
+		defer clean()
+
+		yamlData :=`
+			link1:
+				type: link
+				path: ./file.txt
+		`
+		yamlData = prepareYaml(yamlData)
+
+		// Creates a link with another destination
+		existingLinkPath := path.Join(root, "link1")
+		err := os.Symlink("./another-file.txt", existingLinkPath)
+		assertNoError(err)
+
+		// Tests
+		err = fstree.MakeOverOSFS(root, yamlData)
+		require.Error(t, err)
+		require.Contains(t, err.Error(), "already exists")
+	})
+}
+
 func TestFileCreation(t *testing.T) {
 	t.Run("Empty", func(t *testing.T) {
 		yamlData :=`
