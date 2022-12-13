@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/backdround/go-fstree/fstreemaker"
+	"github.com/backdround/go-fstree/entries"
 	"github.com/lithammer/dedent"
 	"github.com/stretchr/testify/require"
 )
@@ -100,10 +100,10 @@ func TestRootEntries(t *testing.T) {
 
 			// Asserts entires
 			require.Len(t, rootEntry.Entries, 1)
-			require.IsType(t, fstreemaker.FileEntry{}, rootEntry.Entries[0])
+			require.IsType(t, entries.FileEntry{}, rootEntry.Entries[0])
 
 			// Asserts file
-			file := rootEntry.Entries[0].(fstreemaker.FileEntry)
+			file := rootEntry.Entries[0].(entries.FileEntry)
 			require.Equal(t, "file.txt", file.Name)
 			require.Equal(t, []byte{}, file.Data)
 		})
@@ -121,10 +121,10 @@ func TestRootEntries(t *testing.T) {
 
 			// Asserts entires
 			require.Len(t, rootEntry.Entries, 1)
-			require.IsType(t, fstreemaker.FileEntry{}, rootEntry.Entries[0])
+			require.IsType(t, entries.FileEntry{}, rootEntry.Entries[0])
 
 			// Asserts file
-			file := rootEntry.Entries[0].(fstreemaker.FileEntry)
+			file := rootEntry.Entries[0].(entries.FileEntry)
 			require.Equal(t, "file.txt", file.Name)
 			require.Equal(t, []byte("some data"), file.Data)
 		})
@@ -171,10 +171,10 @@ func TestRootEntries(t *testing.T) {
 
 			// Asserts enties
 			require.Len(t, rootEntry.Entries, 1)
-			require.IsType(t, fstreemaker.LinkEntry{}, rootEntry.Entries[0])
+			require.IsType(t, entries.LinkEntry{}, rootEntry.Entries[0])
 
 			// Asserts file
-			link := rootEntry.Entries[0].(fstreemaker.LinkEntry)
+			link := rootEntry.Entries[0].(entries.LinkEntry)
 			require.Equal(t, "pkg1", link.Name)
 			require.Equal(t, "../../pkg1", link.Path)
 		})
@@ -231,10 +231,10 @@ func TestRootEntries(t *testing.T) {
 
 		// Asserts enties
 		require.Len(t, rootEntry.Entries, 1)
-		require.IsType(t, fstreemaker.DirectoryEntry{}, rootEntry.Entries[0])
+		require.IsType(t, entries.DirectoryEntry{}, rootEntry.Entries[0])
 
 		// Asserts file
-		newDirectory := rootEntry.Entries[0].(fstreemaker.DirectoryEntry)
+		newDirectory := rootEntry.Entries[0].(entries.DirectoryEntry)
 		require.Equal(t, "new-directory", newDirectory.Name)
 		require.Len(t, newDirectory.Entries, 0)
 	})
@@ -253,17 +253,17 @@ func TestRootEntries(t *testing.T) {
 		require.Len(t, rootEntry.Entries, 2)
 
 		checkFile := func(entry interface{}) {
-			file := entry.(fstreemaker.FileEntry)
+			file := entry.(entries.FileEntry)
 			require.Equal(t, "file.txt", file.Name)
 			require.Equal(t, []byte("some data"), file.Data)
 		}
 
 		checkDirectory := func(entry interface{}) {
-			directory := entry.(fstreemaker.DirectoryEntry)
+			directory := entry.(entries.DirectoryEntry)
 			require.Equal(t, "new-directory", directory.Name)
 		}
 
-		if _, ok := rootEntry.Entries[0].(fstreemaker.FileEntry); ok {
+		if _, ok := rootEntry.Entries[0].(entries.FileEntry); ok {
 			checkFile(rootEntry.Entries[0])
 			checkDirectory(rootEntry.Entries[1])
 		} else {
@@ -288,14 +288,14 @@ func TestParseInSubDirectory(t *testing.T) {
 
 		// Checks directory
 		require.Len(t, rootEntry.Entries, 1)
-		require.IsType(t, fstreemaker.DirectoryEntry{}, rootEntry.Entries[0])
-		newDirectory := rootEntry.Entries[0].(fstreemaker.DirectoryEntry)
+		require.IsType(t, entries.DirectoryEntry{}, rootEntry.Entries[0])
+		newDirectory := rootEntry.Entries[0].(entries.DirectoryEntry)
 		require.Equal(t, "new-directory", newDirectory.Name)
 		require.Len(t, newDirectory.Entries, 1)
 
 		// Checks file inside new directory
-		require.IsType(t, fstreemaker.FileEntry{}, newDirectory.Entries[0])
-		file := newDirectory.Entries[0].(fstreemaker.FileEntry)
+		require.IsType(t, entries.FileEntry{}, newDirectory.Entries[0])
+		file := newDirectory.Entries[0].(entries.FileEntry)
 		require.Equal(t, "file.txt", file.Name)
 		require.Equal(t, []byte("some data"), file.Data)
 	})

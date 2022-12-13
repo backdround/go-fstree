@@ -5,6 +5,8 @@ import (
 	"bytes"
 	"fmt"
 	"path"
+
+	"github.com/backdround/go-fstree/entries"
 )
 
 type Maker struct {
@@ -13,7 +15,7 @@ type Maker struct {
 
 // makeFile creates a file in the workDirectory. It skips if file with the
 // same data exists. Gives a error if by the filepath something exists.
-func (m Maker) makeFile(workDirectory string, file FileEntry) error {
+func (m Maker) makeFile(workDirectory string, file entries.FileEntry) error {
 	filePath := path.Join(workDirectory, file.Name)
 
 	if m.Fs.IsFile(filePath) {
@@ -36,7 +38,7 @@ func (m Maker) makeFile(workDirectory string, file FileEntry) error {
 
 // makeLink creates link in workDirectory. Gives a error if by the
 // filepath something exists.
-func (m Maker) makeLink(workDirectory string, link LinkEntry) error {
+func (m Maker) makeLink(workDirectory string, link entries.LinkEntry) error {
 	linkPath := path.Join(workDirectory, link.Name)
 
 	if !m.Fs.IsExist(linkPath) {
@@ -66,7 +68,7 @@ func (m Maker) makeLink(workDirectory string, link LinkEntry) error {
 
 // makeDirectory creates directory in workDirectory
 func (m Maker) MakeDirectory(workDirectory string,
-	directory DirectoryEntry) error {
+	directory entries.DirectoryEntry) error {
 	dirPath := path.Join(workDirectory, directory.Name)
 
 	// Creates current directory
@@ -84,20 +86,20 @@ func (m Maker) MakeDirectory(workDirectory string,
 	// Creates directory entries
 	for _, entry := range directory.Entries {
 		switch entry.(type) {
-		case FileEntry:
-			fileEntry := entry.(FileEntry)
+		case entries.FileEntry:
+			fileEntry := entry.(entries.FileEntry)
 			err := m.makeFile(dirPath, fileEntry)
 			if err != nil {
 				return err
 			}
-		case LinkEntry:
-			linkEntry := entry.(LinkEntry)
+		case entries.LinkEntry:
+			linkEntry := entry.(entries.LinkEntry)
 			err := m.makeLink(dirPath, linkEntry)
 			if err != nil {
 				return err
 			}
-		case DirectoryEntry:
-			directoryEntry := entry.(DirectoryEntry)
+		case entries.DirectoryEntry:
+			directoryEntry := entry.(entries.DirectoryEntry)
 			err := m.MakeDirectory(dirPath, directoryEntry)
 			if err != nil {
 				return err
