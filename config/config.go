@@ -185,17 +185,8 @@ func parseLink(name string, entry rawEntry) (entries.LinkEntry,
 	return linkEntry, nil
 }
 
-func Parse(rootPath string, yamlData string) (*entries.DirectoryEntry,
-	error) {
-
-	// Checks the empty root path
-	if rootPath == "" {
-		err := &ParseError{
-			Message: "rootPath mustn't be empty",
-			Path:    "root",
-		}
-		return nil, err
-	}
+// Parse parses filetree structure from yaml to the entries.
+func Parse(yamlData string) (*entries.DirectoryEntry, error) {
 	// Unmarshales to a rawTree
 	rawTree := make(rawEntry)
 	yamlErr := yaml.Unmarshal([]byte(yamlData), rawTree)
@@ -209,7 +200,7 @@ func Parse(rootPath string, yamlData string) (*entries.DirectoryEntry,
 	}
 
 	// Parses the root directory
-	rootEntry, err := parseDirectory(rootPath, rawTree)
+	rootEntry, err := parseDirectory(".", rawTree)
 	if err != nil {
 		return nil, err
 	}

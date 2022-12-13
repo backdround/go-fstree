@@ -3,6 +3,7 @@ package maker
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"path"
 
@@ -13,9 +14,12 @@ type Maker struct {
 	Fs FS
 }
 
-// Make creates fstree structure.
-func (m Maker) Make(directory entries.DirectoryEntry) error {
-	return m.makeDirectory("", directory)
+// Make creates file tree structure.
+func (m Maker) Make(rootPath string, directory entries.DirectoryEntry) error {
+	if rootPath == "" {
+		return errors.New("rootPath must be set")
+	}
+	return m.makeDirectory(rootPath, directory)
 }
 
 

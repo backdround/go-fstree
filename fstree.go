@@ -40,24 +40,16 @@ type FS interface {
 func Make(fs FS, rootPath string, yamlData string) error {
 	var err error
 	// Parses config
-	directoryEntry, err := config.Parse(rootPath, yamlData)
+	directoryEntry, err := config.Parse(yamlData)
 	if err != nil {
 		return err
-	}
-
-	// Creates root directory
-	if !fs.IsDirectory(rootPath) {
-		err := fs.Mkdir(rootPath)
-		if err != nil {
-			return err
-		}
 	}
 
 	// Creates fs tree
 	maker := maker.Maker{
 		Fs: fs,
 	}
-	err = maker.Make(*directoryEntry)
+	err = maker.Make(rootPath, *directoryEntry)
 	return err
 }
 

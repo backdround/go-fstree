@@ -16,29 +16,6 @@ func prepareYaml(data string) string {
 	return data
 }
 
-func TestRootPath(t *testing.T) {
-	t.Run("ValidRootPath", func(t *testing.T) {
-		rootEntry, err := Parse("root", "")
-
-		require.NoError(t, err)
-		require.Equal(t, "root", rootEntry.Name)
-		require.Len(t, rootEntry.Entries, 0)
-	})
-
-	t.Run("EmptyRootPathInvalid", func(t *testing.T) {
-		_, err := Parse("", "")
-		require.Error(t, err)
-	})
-}
-
-func TestRootMustBeADirectory(t *testing.T) {
-	yaml := `type: file`
-
-	_, err := Parse("root", yaml)
-	require.Error(t, err)
-	require.Contains(t, err.Error(), "root")
-}
-
 func TestInvalidTypeField(t *testing.T) {
 	yamlPattern := `
 		directory:
@@ -59,9 +36,9 @@ func TestInvalidTypeField(t *testing.T) {
 	for _, testCase := range testCases {
 		t.Run(testCase.Name, func(t *testing.T) {
 			yaml := fmt.Sprintf(yamlPattern, testCase.TypeData)
-			_, err := Parse("root", yaml)
+			_, err := Parse(yaml)
 			require.Error(t, err)
-			require.Contains(t, err.Error(), "root/directory")
+			require.Contains(t, err.Error(), "directory")
 		})
 	}
 }
@@ -75,13 +52,13 @@ func TestInvalidDataStructure(t *testing.T) {
 	`
 	yaml = prepareYaml(yaml)
 
-	_, err := Parse("root", yaml)
+	_, err := Parse(yaml)
 	require.Error(t, err)
 	require.Contains(t, err.Error(), "unable to convert to dictionary")
 }
 
 func TestInvalidYaml(t *testing.T) {
-	_, err := Parse("root", "\t")
+	_, err := Parse("\t")
 	require.Error(t, err)
 	require.Contains(t, err.Error(), "cannot start any token")
 }
@@ -95,7 +72,7 @@ func TestRootEntries(t *testing.T) {
 			`
 			yaml = prepareYaml(yaml)
 
-			rootEntry, err := Parse("root", yaml)
+			rootEntry, err := Parse(yaml)
 			require.NoError(t, err)
 
 			// Asserts entires
@@ -116,7 +93,7 @@ func TestRootEntries(t *testing.T) {
 			`
 			yaml = prepareYaml(yaml)
 
-			rootEntry, err := Parse("root", yaml)
+			rootEntry, err := Parse(yaml)
 			require.NoError(t, err)
 
 			// Asserts entires
@@ -138,9 +115,9 @@ func TestRootEntries(t *testing.T) {
 			`
 			yaml = prepareYaml(yaml)
 
-			_, err := Parse("root", yaml)
+			_, err := Parse(yaml)
 			require.Error(t, err)
-			require.Contains(t, err.Error(), "root/file.txt")
+			require.Contains(t, err.Error(), "file.txt")
 		})
 
 		t.Run("ErrorUnknownField", func(t *testing.T) {
@@ -151,9 +128,9 @@ func TestRootEntries(t *testing.T) {
 			`
 			yaml = prepareYaml(yaml)
 
-			_, err := Parse("root", yaml)
+			_, err := Parse(yaml)
 			require.Error(t, err)
-			require.Contains(t, err.Error(), "root/file.txt")
+			require.Contains(t, err.Error(), "file.txt")
 		})
 	})
 
@@ -166,7 +143,7 @@ func TestRootEntries(t *testing.T) {
 			`
 			yaml = prepareYaml(yaml)
 
-			rootEntry, err := Parse("root", yaml)
+			rootEntry, err := Parse(yaml)
 			require.NoError(t, err)
 
 			// Asserts enties
@@ -186,9 +163,9 @@ func TestRootEntries(t *testing.T) {
 			`
 			yaml = prepareYaml(yaml)
 
-			_, err := Parse("root", yaml)
+			_, err := Parse(yaml)
 			require.Error(t, err)
-			require.Contains(t, err.Error(), "root/link1")
+			require.Contains(t, err.Error(), "link1")
 		})
 
 		t.Run("ErrorInvalidDataType", func(t *testing.T) {
@@ -200,9 +177,9 @@ func TestRootEntries(t *testing.T) {
 			`
 			yaml = prepareYaml(yaml)
 
-			_, err := Parse("root", yaml)
+			_, err := Parse(yaml)
 			require.Error(t, err)
-			require.Contains(t, err.Error(), "root/link1")
+			require.Contains(t, err.Error(), "link1")
 		})
 
 		t.Run("ErrorUnknownField", func(t *testing.T) {
@@ -214,7 +191,7 @@ func TestRootEntries(t *testing.T) {
 			`
 			yaml = prepareYaml(yaml)
 
-			_, err := Parse("root", yaml)
+			_, err := Parse(yaml)
 			require.Error(t, err)
 			require.Contains(t, err.Error(), "unknown property")
 		})
@@ -226,7 +203,7 @@ func TestRootEntries(t *testing.T) {
 		`
 		yaml = prepareYaml(yaml)
 
-		rootEntry, err := Parse("root", yaml)
+		rootEntry, err := Parse(yaml)
 		require.NoError(t, err)
 
 		// Asserts enties
@@ -248,7 +225,7 @@ func TestRootEntries(t *testing.T) {
 		`
 		yaml = prepareYaml(yaml)
 
-		rootEntry, err := Parse("root", yaml)
+		rootEntry, err := Parse(yaml)
 		require.NoError(t, err)
 		require.Len(t, rootEntry.Entries, 2)
 
@@ -283,7 +260,7 @@ func TestParseInSubDirectory(t *testing.T) {
 		`
 		yaml = prepareYaml(yaml)
 
-		rootEntry, err := Parse("root", yaml)
+		rootEntry, err := Parse(yaml)
 		require.NoError(t, err)
 
 		// Checks directory
@@ -308,8 +285,8 @@ func TestParseInSubDirectory(t *testing.T) {
 		`
 		yaml = prepareYaml(yaml)
 
-		_, err := Parse("root", yaml)
+		_, err := Parse(yaml)
 		require.Error(t, err)
-		require.Contains(t, err.Error(), "root/new-directory/file.txt")
+		require.Contains(t, err.Error(), "new-directory/file.txt")
 	})
 }
