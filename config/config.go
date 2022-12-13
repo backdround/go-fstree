@@ -11,7 +11,7 @@ pkg:
     path: "../../pkg1"
 */
 // will be parsed in an appropriate node tree structure based with
-// types.DirectoryEntry type.
+// fstreemaker.DirectoryEntry type.
 package config
 
 import (
@@ -19,7 +19,7 @@ import (
 	"fmt"
 	"path"
 
-	"github.com/backdround/go-fstree/types"
+	"github.com/backdround/go-fstree/fstreemaker"
 	"github.com/backdround/go-indent"
 	"gopkg.in/yaml.v3"
 )
@@ -58,14 +58,14 @@ func parseAny(name string, entry rawEntry) (parsedEntry any, err *ParseError) {
 	}
 }
 
-func parseDirectory(name string, entry rawEntry) (types.DirectoryEntry,
+func parseDirectory(name string, entry rawEntry) (fstreemaker.DirectoryEntry,
 	*ParseError) {
 	if _, ok := entry["type"]; ok {
 		panic(`unexpected "type" property`)
 	}
 
 	// A constructed entry
-	currentEntry := types.DirectoryEntry{
+	currentEntry := fstreemaker.DirectoryEntry{
 		Name:    name,
 		Entries: make([]any, 0),
 	}
@@ -78,13 +78,13 @@ func parseDirectory(name string, entry rawEntry) (types.DirectoryEntry,
 				Message: "unable to convert to dictionary",
 				Path:    path.Join(name, subEntryName),
 			}
-			return types.DirectoryEntry{}, &parseError
+			return fstreemaker.DirectoryEntry{}, &parseError
 		}
 
 		parsedEntry, err := parseAny(subEntryName, subEntry)
 		if err != nil {
 			err.Path = path.Join(name, err.Path)
-			return types.DirectoryEntry{}, err
+			return fstreemaker.DirectoryEntry{}, err
 		}
 
 		currentEntry.Entries = append(currentEntry.Entries, parsedEntry)
@@ -93,7 +93,8 @@ func parseDirectory(name string, entry rawEntry) (types.DirectoryEntry,
 	return currentEntry, nil
 }
 
-func parseFile(name string, entry rawEntry) (types.FileEntry, *ParseError) {
+func parseFile(name string, entry rawEntry) (fstreemaker.FileEntry,
+	*ParseError) {
 	// Asserts type property
 	typeValue, ok := entry["type"]
 	if !ok || typeValue != "file" {
@@ -102,16 +103,16 @@ func parseFile(name string, entry rawEntry) (types.FileEntry, *ParseError) {
 	delete(entry, "type")
 
 	// Returns error result
-	errorResult := func(errorMessage string) (types.FileEntry, *ParseError) {
+	errorResult := func(errorMessage string) (fstreemaker.FileEntry, *ParseError) {
 		parseError := ParseError{
 			Message: errorMessage,
 			Path:    name,
 		}
-		return types.FileEntry{}, &parseError
+		return fstreemaker.FileEntry{}, &parseError
 	}
 
 	// A constructed entry
-	fileEntry := types.FileEntry{
+	fileEntry := fstreemaker.FileEntry{
 		Name: name,
 		Data: []byte{},
 	}
@@ -135,7 +136,8 @@ func parseFile(name string, entry rawEntry) (types.FileEntry, *ParseError) {
 	return fileEntry, nil
 }
 
-func parseLink(name string, entry rawEntry) (types.LinkEntry, *ParseError) {
+func parseLink(name string, entry rawEntry) (fstreemaker.LinkEntry,
+	*ParseError) {
 	typeValue, ok := entry["type"]
 	if !ok || typeValue != "link" {
 		panic(fmt.Sprintf("unexpected type property: %v", typeValue))
@@ -143,16 +145,17 @@ func parseLink(name string, entry rawEntry) (types.LinkEntry, *ParseError) {
 	delete(entry, "type")
 
 	// Returns error result
-	errorResult := func(errorMessage string) (types.LinkEntry, *ParseError) {
+	errorResult := func(errorMessage string) (fstreemaker.LinkEntry,
+		*ParseError) {
 		parseError := ParseError{
 			Message: errorMessage,
 			Path:    name,
 		}
-		return types.LinkEntry{}, &parseError
+		return fstreemaker.LinkEntry{}, &parseError
 	}
 
 	// A constructed entry
-	linkEntry := types.LinkEntry{
+	linkEntry := fstreemaker.LinkEntry{
 		Name: name,
 	}
 
@@ -182,7 +185,8 @@ func parseLink(name string, entry rawEntry) (types.LinkEntry, *ParseError) {
 	return linkEntry, nil
 }
 
-func Parse(rootPath string, yamlData string) (*types.DirectoryEntry, error) {
+func Parse(rootPath string, yamlData string) (*fstreemaker.DirectoryEntry,
+	error) {
 
 	// Checks the empty root path
 	if rootPath == "" {

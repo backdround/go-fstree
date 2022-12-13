@@ -15,7 +15,7 @@ type Maker struct {
 
 // makeFile creates a file in the workDirectory. It skips if file with the
 // same data exists. Gives a error if by the filepath something exists.
-func (m Maker) makeFile(workDirectory string, file types.FileEntry) error {
+func (m Maker) makeFile(workDirectory string, file FileEntry) error {
 	filePath := path.Join(workDirectory, file.Name)
 
 	if m.Fs.IsFile(filePath) {
@@ -38,7 +38,7 @@ func (m Maker) makeFile(workDirectory string, file types.FileEntry) error {
 
 // makeLink creates link in workDirectory. Gives a error if by the
 // filepath something exists.
-func (m Maker) makeLink(workDirectory string, link types.LinkEntry) error {
+func (m Maker) makeLink(workDirectory string, link LinkEntry) error {
 	linkPath := path.Join(workDirectory, link.Name)
 
 	if !m.Fs.IsExist(linkPath) {
@@ -68,7 +68,7 @@ func (m Maker) makeLink(workDirectory string, link types.LinkEntry) error {
 
 // makeDirectory creates directory in workDirectory
 func (m Maker) MakeDirectory(workDirectory string,
-	directory types.DirectoryEntry) error {
+	directory DirectoryEntry) error {
 	dirPath := path.Join(workDirectory, directory.Name)
 
 	// Creates current directory
@@ -86,20 +86,20 @@ func (m Maker) MakeDirectory(workDirectory string,
 	// Creates directory entries
 	for _, entry := range directory.Entries {
 		switch entry.(type) {
-		case types.FileEntry:
-			fileEntry := entry.(types.FileEntry)
+		case FileEntry:
+			fileEntry := entry.(FileEntry)
 			err := m.makeFile(dirPath, fileEntry)
 			if err != nil {
 				return err
 			}
-		case types.LinkEntry:
-			linkEntry := entry.(types.LinkEntry)
+		case LinkEntry:
+			linkEntry := entry.(LinkEntry)
 			err := m.makeLink(dirPath, linkEntry)
 			if err != nil {
 				return err
 			}
-		case types.DirectoryEntry:
-			directoryEntry := entry.(types.DirectoryEntry)
+		case DirectoryEntry:
+			directoryEntry := entry.(DirectoryEntry)
 			err := m.MakeDirectory(dirPath, directoryEntry)
 			if err != nil {
 				return err
