@@ -38,6 +38,17 @@ func (OsFS) IsDirectory(path string) bool {
 	return fileInfo.IsDir()
 }
 
+func (OsFS) ReadDir(path string) (entryPaths []string, err error) {
+	dirEntries, err := os.ReadDir(path)
+	entryPaths = []string{}
+
+	for _, entry := range dirEntries {
+		entryPaths = append(entryPaths, entry.Name())
+	}
+
+	return
+}
+
 func (OsFS) ReadFile(path string) ([]byte, error) {
 	return os.ReadFile(path)
 }
