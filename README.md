@@ -6,9 +6,10 @@
 # FSTree
 
 FSTree is a module that works with filesystem trees driven by yaml.
-Module can make new fs tree that described in yaml. Also it can check
-existing filetree by the given yaml description. This package is
-intended to use in tests.
+
+It can:
+- make new filetree that described by yaml
+- check existing filetree by the given yaml description.
 
 ### Installation
 
