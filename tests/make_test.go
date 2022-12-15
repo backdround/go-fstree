@@ -3,42 +3,11 @@ package fstree_test
 import (
 	"os"
 	"path"
-	"strings"
 	"testing"
 
-	"github.com/lithammer/dedent"
 	"github.com/stretchr/testify/require"
-
 	"github.com/backdround/go-fstree"
 )
-
-////////////////////////////////////////////////////////////
-// Utility functions
-
-func assertNoError(err error) {
-	if err != nil {
-		panic(err)
-	}
-}
-
-func prepareYaml(data string) string {
-	data = dedent.Dedent(data)
-	data = strings.ReplaceAll(data, "\t", "  ")
-	return data
-}
-
-func createRoot() (rootPath string, clean func()) {
-	rootPath, err := os.MkdirTemp("", "go-fstree-test-*.d")
-	assertNoError(err)
-
-	clean = func() {
-		err := os.RemoveAll(rootPath)
-		assertNoError(err)
-	}
-
-	return
-}
-
 
 ////////////////////////////////////////////////////////////
 // Assertion functions
