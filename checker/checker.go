@@ -40,47 +40,10 @@ func (c Checker) checkDir(currentPath string,
 	}
 
 	// Checks that all existing entries are expected
-	existingEntryNames, err := c.Fs.ReadDir(directoryPath)
-	if err != nil {
-		return nil, err
-	}
-
-	checkIfPathIsExpected := func(entryPath string) bool {
-		for _, expectedEntry := range expectedDir.Entries {
-			var expectedEntryName string
-
-			switch expectedEntry.(type) {
-			case entries.FileEntry:
-				expectedEntryName = expectedEntry.(entries.FileEntry).Name
-			case entries.LinkEntry:
-				expectedEntryName = expectedEntry.(entries.LinkEntry).Name
-			case entries.DirectoryEntry:
-				expectedEntryName = expectedEntry.(entries.DirectoryEntry).Name
-			default:
-				panic("unknown entry type")
-			}
-
-			expectedEntryPath := path.Join(currentPath, expectedEntryName)
-			match, _ := path.Match(expectedEntryPath, entryPath)
-			if match {
-				return true
-			}
-		}
-
-		return false
-	}
-
-	for _, existingEntryName := range existingEntryNames {
-		existingEntryPath := path.Join(currentPath, existingEntryName)
-		if !checkIfPathIsExpected(existingEntryPath) {
-			difference = &Difference{
-				Path:        existingEntryPath,
-				Expectation: "path doesn't exist",
-				Real: "path exists",
-			}
-
-			return difference, nil
-		}
+	diff, err := c.checkThatDirectoryEntriesAreExpected(directoryPath,
+		expectedDir.Entries)
+	if diff != nil || err != nil {
+		return diff, err
 	}
 
 	// Checks entries
@@ -107,6 +70,35 @@ func (c Checker) checkDir(currentPath string,
 		if diff != nil || err != nil {
 			return diff, err
 		}
+	}
+
+	return nil, nil
+}
+
+func (c Checker) checkThatDirectoryEntriesAreExpected(directoryPath string,
+	expectedEntries []entries.Entry) (*Difference, error) {
+
+	existingEntryNames, err := c.Fs.ReadDir(directoryPath)
+	if err != nil {
+		return nil, err
+	}
+
+	OverExistingNames:
+	for _, existingEntryName := range existingEntryNames {
+		for _, expectedEntry := range expectedEntries {
+			if existingEntryName == expectedEntry.GetName() {
+				continue OverExistingNames
+			}
+		}
+
+		differencePath := path.Join(directoryPath, existingEntryName)
+		difference := &Difference{
+			Path:        differencePath,
+			Expectation: "path doesn't exist",
+			Real:        "path exists",
+		}
+
+		return difference, nil
 	}
 
 	return nil, nil
