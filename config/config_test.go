@@ -82,7 +82,7 @@ func TestRootEntries(t *testing.T) {
 			// Asserts file
 			file := rootEntry.Entries[0].(entries.FileEntry)
 			require.Equal(t, "file.txt", file.Name)
-			require.Equal(t, []byte{}, file.Data)
+			require.Nil(t, file.Data)
 		})
 
 		t.Run("WithData", func(t *testing.T) {
