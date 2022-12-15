@@ -22,7 +22,6 @@ func (m Maker) Make(rootPath string, directory entries.DirectoryEntry) error {
 	return m.makeDirectory(rootPath, directory)
 }
 
-
 // makeFile creates a file in the workDirectory. It skips if file with the
 // same data exists. Gives a error if by the filepath something exists.
 func (m Maker) makeFile(workDirectory string, file entries.FileEntry) error {
@@ -95,27 +94,24 @@ func (m Maker) makeDirectory(workDirectory string,
 
 	// Creates directory entries
 	for _, entry := range directory.Entries {
+		var err error
+
 		switch entry.(type) {
 		case entries.FileEntry:
 			fileEntry := entry.(entries.FileEntry)
-			err := m.makeFile(dirPath, fileEntry)
-			if err != nil {
-				return err
-			}
+			err = m.makeFile(dirPath, fileEntry)
 		case entries.LinkEntry:
 			linkEntry := entry.(entries.LinkEntry)
-			err := m.makeLink(dirPath, linkEntry)
-			if err != nil {
-				return err
-			}
+			err = m.makeLink(dirPath, linkEntry)
 		case entries.DirectoryEntry:
 			directoryEntry := entry.(entries.DirectoryEntry)
-			err := m.makeDirectory(dirPath, directoryEntry)
-			if err != nil {
-				return err
-			}
+			err = m.makeDirectory(dirPath, directoryEntry)
 		default:
 			panic("unknown entry type")
+		}
+
+		if err != nil {
+			return err
 		}
 	}
 
