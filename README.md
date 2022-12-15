@@ -5,8 +5,10 @@
 
 # FSTree
 
-FSTree makes a filesystem tree from a given yaml definition. This
-package is intended to use in tests.
+FSTree is a module that works with filesystem trees driven by yaml.
+Module can make new fs tree that described in yaml. Also it can check
+existing filetree by the given yaml description. This package is
+intended to use in tests.
 
 ### Installation
 
@@ -14,7 +16,7 @@ package is intended to use in tests.
 go get github.com/backdround/go-fstree
 ```
 
-### Example
+### Example make fstree
 
 ```go
 package main
@@ -28,12 +30,12 @@ import (
 
 var fstreeYaml =`
 configs:
-  config1.txt:
+  config1.ini:
     type: file
-    data: "format: txt"
-  config2.txt:
+    data: "port = 143"
+  config2.yaml:
     type: file
-    data: "format: yaml"
+    data: "port: 343"
 pkg:
   pkg1:
     type: link
@@ -56,13 +58,68 @@ It creates the following structure:
 ```
 project
 ├── configs
-│   ├── config1.txt
-│   └── config2.txt
+│   ├── config1.ini
+│   └── config2.yaml
 └── pkg
     └── pkg1 -> ../../pkg1
 ```
 
-### FS Entries
+### Example check fstree
+
+```go
+package main
+
+import (
+	"log"
+	"strings"
+
+	"github.com/backdround/go-fstree"
+)
+
+var fstreeYaml =`
+configs:
+  config1.ini:
+    type: file
+    data: "port = 143"
+  config2.yaml:
+    type: file
+    data: "port: 343"
+pkg:
+  pkg1:
+    type: link
+    path: ../../pkg1
+`
+
+func main() {
+	fstreeYaml = strings.ReplaceAll(fstreeYaml, "\t", "  ")
+	
+	// checks filesystem tree in ./project
+	difference, err := fstree.CheckOverOSFS("./project", fstreeYaml)
+	
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if difference != nil {
+		log.Printf("Path %q isn't corresponds to the expected tree:\n",
+			difference.Path)
+		log.Println(difference.Real)
+	}
+}
+```
+
+It checks that `./project` is corresponds to the following structure:
+```
+project
+├── configs
+│   ├── config1.ini
+│   └── config2.yaml
+└── pkg
+    └── pkg1 -> ../../pkg1
+```
+
+
+### Yaml entries
 
 #### Directory
 ```yaml
