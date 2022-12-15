@@ -138,7 +138,7 @@ func (c Checker) checkFile(currentPath string, expectedFile entries.FileEntry) (
 		difference = &Difference{
 			Path:        filePath,
 			Expectation: "file data is equal to expected data",
-			Real:        "file data isn't equal ot expected data",
+			Real:        "file data isn't equal to expected data",
 		}
 		return difference, nil
 	}
@@ -182,8 +182,8 @@ func (c Checker) checkLink(currentPath string, expectedLink entries.LinkEntry) (
 	if !match {
 		difference = &Difference{
 			Path:        linkPath,
-			Expectation: "link points to" + expectedLink.Path,
-			Real:        "link points to" + linkDestination,
+			Expectation: "link points to " + expectedLink.Path,
+			Real:        "link points to " + linkDestination,
 		}
 		return difference, nil
 	}

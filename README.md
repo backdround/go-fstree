@@ -104,6 +104,8 @@ func main() {
 		log.Printf("Path %q isn't corresponds to the expected tree:\n",
 			difference.Path)
 		log.Println(difference.Real)
+	} else {
+		log.Println("./project is corresponds to the given yaml")
 	}
 }
 ```
