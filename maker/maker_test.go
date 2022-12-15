@@ -43,7 +43,7 @@ func TestFileCreationCornerCases(t *testing.T) {
 
 		rootEntry := entries.DirectoryEntry{
 			Name: ".",
-			Entries: []any{
+			Entries: []entries.Entry{
 				entries.FileEntry{
 					Name: "file.txt",
 					Data: []byte("some data"),
@@ -68,7 +68,7 @@ func TestFileCreationCornerCases(t *testing.T) {
 
 		rootEntry := entries.DirectoryEntry{
 			Name: ".",
-			Entries: []any{
+			Entries: []entries.Entry{
 				entries.FileEntry{
 					Name: "file.txt",
 					Data: []byte("some data"),
@@ -94,7 +94,7 @@ func TestLinkCreationCornerCases(t *testing.T) {
 
 		rootEntry := entries.DirectoryEntry{
 			Name: ".",
-			Entries: []any{
+			Entries: []entries.Entry{
 				entries.LinkEntry{
 					Name: "link1",
 					Path: "./file.txt",
@@ -119,7 +119,7 @@ func TestLinkCreationCornerCases(t *testing.T) {
 
 		rootEntry := entries.DirectoryEntry{
 			Name: ".",
-			Entries: []any{
+			Entries: []entries.Entry{
 				entries.LinkEntry{
 					Name: "link1",
 					Path: "./file.txt",
@@ -144,7 +144,7 @@ func TestLinkCreationCornerCases(t *testing.T) {
 
 		rootEntry := entries.DirectoryEntry{
 			Name: ".",
-			Entries: []any{
+			Entries: []entries.Entry{
 				entries.LinkEntry{
 					Name: "link1",
 					Path: "./file.txt",
@@ -170,10 +170,10 @@ func TestDirectoryCreationCornerCases(t *testing.T) {
 
 		rootEntry := entries.DirectoryEntry{
 			Name: ".",
-			Entries: []any{
+			Entries: []entries.Entry{
 				entries.DirectoryEntry{
 					Name:    "new-directory",
-					Entries: []any{},
+					Entries: []entries.Entry{},
 				},
 			},
 		}
@@ -195,10 +195,10 @@ func TestDirectoryCreationCornerCases(t *testing.T) {
 
 		rootEntry := entries.DirectoryEntry{
 			Name: ".",
-			Entries: []any{
+			Entries: []entries.Entry{
 				entries.DirectoryEntry{
 					Name:    "new-directory",
-					Entries: []any{},
+					Entries: []entries.Entry{},
 				},
 			},
 		}

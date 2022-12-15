@@ -62,7 +62,7 @@ func createDirectory(basePath string, name string) string {
 ////////////////////////////////////////////////////////////
 // Perform test functions
 
-func performCheck(rootPath string, internalEntries ...any) (
+func performCheck(rootPath string, internalEntries ...entries.Entry) (
 	difference *Difference, err error) {
 
 	expectedTree := entries.DirectoryEntry{
@@ -266,7 +266,7 @@ func TestSubdirectory(t *testing.T) {
 
 		difference, err := performCheck(rootPath, entries.DirectoryEntry{
 			Name: "sub-directory",
-			Entries: []any{
+			Entries: []entries.Entry{
 				entries.FileEntry{
 					Name: "file.txt",
 					Data: []byte("some data"),
@@ -291,7 +291,7 @@ func TestSubdirectory(t *testing.T) {
 
 		difference, err := performCheck(rootPath, entries.DirectoryEntry{
 			Name: "sub-directory",
-			Entries: []any{
+			Entries: []entries.Entry{
 				entries.FileEntry{
 					Name: "file.txt",
 					Data: []byte("some data"),

@@ -38,7 +38,8 @@ func (e *ParseError) Error() string {
 	return resultMessage
 }
 
-func parseAny(name string, entry rawEntry) (parsedEntry any, err *ParseError) {
+func parseAny(name string, entry rawEntry) (parsedEntry entries.Entry,
+	err *ParseError) {
 	entryType, ok := entry["type"]
 	if !ok {
 		return parseDirectory(name, entry)
@@ -67,7 +68,7 @@ func parseDirectory(name string, entry rawEntry) (entries.DirectoryEntry,
 	// A constructed entry
 	currentEntry := entries.DirectoryEntry{
 		Name:    name,
-		Entries: make([]any, 0),
+		Entries: make([]entries.Entry, 0),
 	}
 
 	// Parses sub entires
