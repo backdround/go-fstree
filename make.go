@@ -9,7 +9,7 @@ import (
 
 // FS describes required interface for work with filesystem.
 // In the most cases it copies os package signatures.
-type FS interface {
+type MakerFS interface {
 	IsExist(path string) bool
 	IsFile(path string) bool
 	IsLink(path string) bool
@@ -37,7 +37,7 @@ type FS interface {
 // The function creates:
 //   - ./configs/config1.txt (file with data "format: txt")
 //   - ./pkg/pkg1 (link points to "../../pkg1")
-func Make(fs FS, rootPath string, yamlData string) error {
+func Make(fs MakerFS, rootPath string, yamlData string) error {
 	var err error
 	// Parses config
 	directoryEntry, err := config.Parse(yamlData)
