@@ -114,7 +114,6 @@ func parseFile(name string, entry rawEntry) (entries.FileEntry,
 	// A constructed entry
 	fileEntry := entries.FileEntry{
 		Name: name,
-		Data: []byte{},
 	}
 
 	// Parses file properties

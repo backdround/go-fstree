@@ -35,29 +35,35 @@ func createRoot() (rootPath string, clean func()) {
 	return
 }
 
-func createFile(basePath string, name string, data string) {
+func createFile(basePath string, name string, data string) string {
 	filePath := path.Join(basePath, name)
 	err := os.WriteFile(filePath, []byte(data), 0644)
 	assertNoError(err)
+
+	return filePath
 }
 
-func createLink(basePath string, name string, destination string) {
+func createLink(basePath string, name string, destination string) string {
 	linkPath := path.Join(basePath, name)
 	err := os.Symlink(destination, linkPath)
 	assertNoError(err)
+
+	return linkPath
 }
 
-func createDirectory(basePath string, name string) {
+func createDirectory(basePath string, name string) string {
 	directoryPath := path.Join(basePath, name)
 	err := os.Mkdir(directoryPath, 0755)
 	assertNoError(err)
+
+	return directoryPath
 }
 
 ////////////////////////////////////////////////////////////
 // Perform test functions
 
-func performCheck(rootPath string, internalEntries ...any) (difference string,
-	err error) {
+func performCheck(rootPath string, internalEntries ...any) (
+	difference *Difference, err error) {
 
 	expectedTree := entries.DirectoryEntry{
 		Name: "./",
@@ -71,20 +77,42 @@ func performCheck(rootPath string, internalEntries ...any) (difference string,
 ////////////////////////////////////////////////////////////
 // Asserts functions
 
-func requireDifferent(t *testing.T, difference string, err error) {
+func requireDifferent(t *testing.T, difference *Difference, err error) {
 	t.Helper()
 	require.NoError(t, err)
-	require.NotEmpty(t, difference)
+	require.NotNil(t, difference)
 }
 
-func requireTheSame(t *testing.T, difference string, err error) {
+func requireDifferentPath(t *testing.T, expectedPath string,
+	differencePath string) {
+	t.Helper()
+	match, err := path.Match(expectedPath, differencePath)
+	require.NoError(t, err, "Unable to match the given paths:",
+		expectedPath, differencePath)
+	require.True(t, match, "Expect that paths be the same",
+		expectedPath, differencePath)
+}
+
+func requireTheSame(t *testing.T, difference *Difference, err error) {
 	t.Helper()
 	require.NoError(t, err)
-	require.Empty(t, difference)
+	require.Nil(t, difference)
 }
+
 
 ////////////////////////////////////////////////////////////
 // Test cases
+
+func TestUnexpectedEntry(t *testing.T) {
+	rootPath, clean := createRoot()
+	defer clean()
+	filePath := createFile(rootPath, "file.txt", "")
+
+	difference, err := performCheck(rootPath)
+
+	requireDifferent(t, difference, err)
+	requireDifferentPath(t, filePath, difference.Path)
+}
 
 func TestFile(t *testing.T) {
 	t.Run("WithTheSameDataExists", func(t *testing.T) {
@@ -103,7 +131,7 @@ func TestFile(t *testing.T) {
 	t.Run("WithAnotherDataExists", func(t *testing.T) {
 		rootPath, clean := createRoot()
 		defer clean()
-		createFile(rootPath, "file.txt", "another data")
+		filePath := createFile(rootPath, "file.txt", "another data")
 
 		difference, err := performCheck(rootPath, entries.FileEntry{
 			Name: "file.txt",
@@ -111,6 +139,7 @@ func TestFile(t *testing.T) {
 		})
 
 		requireDifferent(t, difference, err)
+		requireDifferentPath(t, filePath, difference.Path)
 	})
 
 	t.Run("DontCheckData", func(t *testing.T) {
@@ -128,7 +157,7 @@ func TestFile(t *testing.T) {
 	t.Run("CheckEmptyData", func(t *testing.T) {
 		rootPath, clean := createRoot()
 		defer clean()
-		createFile(rootPath, "file.txt", "some data")
+		filePath := createFile(rootPath, "file.txt", "some data")
 
 		difference, err := performCheck(rootPath, entries.FileEntry{
 			Name: "file.txt",
@@ -136,6 +165,7 @@ func TestFile(t *testing.T) {
 		})
 
 		requireDifferent(t, difference, err)
+		requireDifferentPath(t, filePath, difference.Path)
 	})
 
 
@@ -149,6 +179,8 @@ func TestFile(t *testing.T) {
 		})
 
 		requireDifferent(t, difference, err)
+		expectedDifferencePath := path.Join(rootPath, "file.txt")
+		requireDifferentPath(t, expectedDifferencePath, difference.Path)
 	})
 }
 
@@ -169,7 +201,7 @@ func TestLink(t *testing.T) {
 	t.Run("WithAnotherPathExists", func(t *testing.T) {
 		rootPath, clean := createRoot()
 		defer clean()
-		createLink(rootPath, "link1", "./another-file.txt")
+		linkPath := createLink(rootPath, "link1", "./another-file.txt")
 
 		difference, err := performCheck(rootPath, entries.LinkEntry{
 			Name: "link1",
@@ -177,6 +209,7 @@ func TestLink(t *testing.T) {
 		})
 
 		requireDifferent(t, difference, err)
+		requireDifferentPath(t, linkPath, difference.Path)
 	})
 
 	t.Run("DoesntExist", func(t *testing.T) {
@@ -189,6 +222,8 @@ func TestLink(t *testing.T) {
 		})
 
 		requireDifferent(t, difference, err)
+		expectedDifferencePath := path.Join(rootPath, "link1")
+		requireDifferentPath(t, expectedDifferencePath, difference.Path)
 	})
 }
 
@@ -214,6 +249,8 @@ func TestDirectory(t *testing.T) {
 		})
 
 		requireDifferent(t, difference, err)
+		expectedDifferencePath := path.Join(rootPath, "some-directory")
+		requireDifferentPath(t, expectedDifferencePath, difference.Path)
 	})
 }
 
@@ -250,7 +287,7 @@ func TestSubdirectory(t *testing.T) {
 
 		createDirectory(rootPath, "sub-directory")
 		subdirectoryPath := path.Join(rootPath, "sub-directory")
-		createFile(subdirectoryPath, "file.txt", "another data")
+		filePath := createFile(subdirectoryPath, "file.txt", "another data")
 
 		difference, err := performCheck(rootPath, entries.DirectoryEntry{
 			Name: "sub-directory",
@@ -263,5 +300,6 @@ func TestSubdirectory(t *testing.T) {
 		})
 
 		requireDifferent(t, difference, err)
+		requireDifferentPath(t, filePath, difference.Path)
 	})
 }
