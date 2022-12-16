@@ -6,7 +6,7 @@ import (
 	"github.com/backdround/go-fstree/osfs"
 )
 
-// FS describes required interface for filesystem checking.
+// CheckFS describes required interface for checking filetree.
 // In the most cases it copies os package signatures.
 type CheckFS interface {
 	IsExist(path string) bool
@@ -57,7 +57,7 @@ func Check(fs CheckFS, rootPath string, yamlData string) (*Difference, error) {
 	return (*Difference)(difference), err
 }
 
-// CheckOverOSFS makes the same thing as Chek, but uses the
+// CheckOverOSFS makes the same thing as Check, but uses the
 // real filesystem
 func CheckOverOSFS(rootPath string, yamlData string) (*Difference, error) {
 	fs := osfs.OsFS{}

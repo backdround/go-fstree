@@ -6,7 +6,7 @@ import (
 	"github.com/backdround/go-fstree/osfs"
 )
 
-// FS describes required interface for work with filesystem.
+// MakerFS describes required interface for making filetree.
 // In the most cases it copies os package signatures.
 type MakerFS interface {
 	IsExist(path string) bool
