@@ -5,8 +5,8 @@ import (
 	"path"
 	"testing"
 
-	"github.com/stretchr/testify/require"
 	"github.com/backdround/go-fstree"
+	"github.com/stretchr/testify/require"
 )
 
 ////////////////////////////////////////////////////////////
@@ -16,7 +16,7 @@ func requireFile(t *testing.T, basePath string, name string, data string) {
 	t.Helper()
 
 	filePath := path.Join(basePath, name)
-	realData, err :=  os.ReadFile(filePath)
+	realData, err := os.ReadFile(filePath)
 	require.NoError(t, err)
 	require.Equal(t, data, string(realData))
 }
@@ -26,7 +26,7 @@ func requireLink(t *testing.T, basePath string, name string,
 	t.Helper()
 
 	linkPath := path.Join(basePath, name)
-	realDestination, err :=  os.Readlink(linkPath)
+	realDestination, err := os.Readlink(linkPath)
 	require.NoError(t, err)
 
 	match, err := path.Match(destination, realDestination)

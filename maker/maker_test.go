@@ -42,9 +42,9 @@ func GetOsMaker() Maker {
 ////////////////////////////////////////////////////////////
 // Perform test functions
 
-func performMake(rootPath string, internalEntries ...entries.Entry) (error) {
+func performMake(rootPath string, internalEntries ...entries.Entry) error {
 	newTree := entries.DirectoryEntry{
-		Name: "./",
+		Name:    "./",
 		Entries: internalEntries,
 	}
 
@@ -59,7 +59,7 @@ func requireFile(t *testing.T, basePath string, name string, data string) {
 	t.Helper()
 
 	filePath := path.Join(basePath, name)
-	realData, err :=  os.ReadFile(filePath)
+	realData, err := os.ReadFile(filePath)
 	require.NoError(t, err)
 	require.Equal(t, data, string(realData))
 }
@@ -69,7 +69,7 @@ func requireLink(t *testing.T, basePath string, name string,
 	t.Helper()
 
 	linkPath := path.Join(basePath, name)
-	realDestination, err :=  os.Readlink(linkPath)
+	realDestination, err := os.Readlink(linkPath)
 	require.NoError(t, err)
 
 	match, err := path.Match(destination, realDestination)
@@ -123,7 +123,8 @@ func TestFile(t *testing.T) {
 			entries.FileEntry{
 				Name: "file.txt",
 				Data: []byte("some data"),
-		})
+			},
+		)
 
 		// Asserts
 		require.NoError(t, err)
@@ -144,7 +145,8 @@ func TestFile(t *testing.T) {
 			entries.FileEntry{
 				Name: "file.txt",
 				Data: []byte("some data"),
-		})
+			},
+		)
 
 		// Asserts
 		require.Error(t, err)
@@ -165,7 +167,8 @@ func TestFile(t *testing.T) {
 			entries.FileEntry{
 				Name: "file.txt",
 				Data: []byte("some data"),
-		})
+			},
+		)
 
 		// Asserts
 		require.NoError(t, err)
@@ -183,7 +186,8 @@ func TestLink(t *testing.T) {
 			entries.LinkEntry{
 				Name: "link1",
 				Path: "./file.txt",
-		})
+			},
+		)
 
 		// Asserts
 		require.NoError(t, err)
@@ -204,7 +208,8 @@ func TestLink(t *testing.T) {
 			entries.LinkEntry{
 				Name: "link1",
 				Path: "./file.txt",
-		})
+			},
+		)
 
 		// Asserts
 		require.Error(t, err)
@@ -225,7 +230,8 @@ func TestLink(t *testing.T) {
 			entries.LinkEntry{
 				Name: "link1",
 				Path: "./file.txt",
-		})
+			},
+		)
 
 		// Asserts
 		require.Error(t, err)
@@ -246,7 +252,8 @@ func TestLink(t *testing.T) {
 			entries.LinkEntry{
 				Name: "link1",
 				Path: "./file.txt",
-		})
+			},
+		)
 
 		// Asserts
 		require.NoError(t, err)
@@ -261,9 +268,10 @@ func TestDirectory(t *testing.T) {
 		// Tests
 		err := performMake(rootPath,
 			entries.DirectoryEntry{
-				Name: "new-directory",
+				Name:    "new-directory",
 				Entries: []entries.Entry{},
-		})
+			},
+		)
 
 		// Asserts
 		require.NoError(t, err)
@@ -281,9 +289,10 @@ func TestDirectory(t *testing.T) {
 		// Tests
 		err = performMake(rootPath,
 			entries.DirectoryEntry{
-				Name: "new-directory",
+				Name:    "new-directory",
 				Entries: []entries.Entry{},
-		})
+			},
+		)
 
 		// Asserts
 		require.Error(t, err)
@@ -302,9 +311,10 @@ func TestDirectory(t *testing.T) {
 		// Tests
 		err = performMake(rootPath,
 			entries.DirectoryEntry{
-				Name: "new-directory",
+				Name:    "new-directory",
 				Entries: []entries.Entry{},
-		})
+			},
+		)
 
 		// Asserts
 		require.NoError(t, err)
@@ -329,11 +339,12 @@ func TestSubDirectory(t *testing.T) {
 					Path: "./file.txt",
 				},
 				entries.DirectoryEntry{
-					Name: "more-sub-directory",
+					Name:    "more-sub-directory",
 					Entries: []entries.Entry{},
 				},
 			},
-	})
+		},
+	)
 
 	// Asserts
 	require.NoError(t, err)

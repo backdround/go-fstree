@@ -1,8 +1,8 @@
 package fstree_test
 
 import (
-	"os"
 	"github.com/lithammer/dedent"
+	"os"
 	"strings"
 )
 

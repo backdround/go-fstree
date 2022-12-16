@@ -66,7 +66,7 @@ func performCheck(rootPath string, internalEntries ...entries.Entry) (
 	difference *Difference, err error) {
 
 	expectedTree := entries.DirectoryEntry{
-		Name: "./",
+		Name:    "./",
 		Entries: internalEntries,
 	}
 
@@ -98,7 +98,6 @@ func requireTheSame(t *testing.T, difference *Difference, err error) {
 	require.NoError(t, err)
 	require.Nil(t, difference)
 }
-
 
 ////////////////////////////////////////////////////////////
 // Test cases
@@ -167,7 +166,6 @@ func TestFile(t *testing.T) {
 		requireDifferent(t, difference, err)
 		requireDifferentPath(t, filePath, difference.Path)
 	})
-
 
 	t.Run("DoesntExist", func(t *testing.T) {
 		rootPath, clean := createRoot()

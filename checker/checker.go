@@ -83,7 +83,7 @@ func (c Checker) checkThatDirectoryEntriesAreExpected(directoryPath string,
 		return nil, err
 	}
 
-	OverExistingNames:
+OverExistingNames:
 	for _, existingEntryName := range existingEntryNames {
 		for _, expectedEntry := range expectedEntries {
 			if existingEntryName == expectedEntry.GetName() {

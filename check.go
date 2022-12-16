@@ -1,8 +1,8 @@
 package fstree
 
 import (
-	"github.com/backdround/go-fstree/config"
 	"github.com/backdround/go-fstree/checker"
+	"github.com/backdround/go-fstree/config"
 	"github.com/backdround/go-fstree/osfs"
 )
 
@@ -22,9 +22,9 @@ type CheckFS interface {
 // Difference type describes specific difference between filesystem
 // and check expectation
 type Difference struct {
-	Path string
+	Path        string
 	Expectation string
-	Real string
+	Real        string
 }
 
 // Check checks filesystem tree in rootPath by yamlData.
@@ -50,7 +50,7 @@ func Check(fs CheckFS, rootPath string, yamlData string) (*Difference, error) {
 	}
 
 	// Checks fs tree
-	checker := checker.Checker {
+	checker := checker.Checker{
 		Fs: fs,
 	}
 	difference, err := checker.Check(rootPath, *directoryEntry)
