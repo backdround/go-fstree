@@ -168,13 +168,27 @@ func (c Checker) checkLink(currentPath string, expectedLink entries.LinkEntry) (
 		return difference, nil
 	}
 
-	// Checks the link destination
-	linkDestination, err := c.Fs.Readlink(linkPath)
+	// Gets the link destinations
+	realDestination, err := c.Fs.Readlink(linkPath)
 	if err != nil {
 		return nil, err
 	}
 
-	match, err := path.Match(linkDestination, expectedLink.Path)
+	getAbsoluteDestination := func (linkPath, linkDestination string) string {
+		if path.IsAbs(linkDestination) {
+			return linkDestination
+		}
+		linkDirectory := path.Dir(linkPath)
+		linkDestination = path.Join(linkDirectory, linkDestination)
+		return path.Clean(linkDestination)
+	}
+
+	realAbsDestination := getAbsoluteDestination(linkPath, realDestination)
+	expectedAbsDestination := getAbsoluteDestination(linkPath,
+		expectedLink.Path)
+
+	// Compare links
+	match, err := path.Match(realAbsDestination, expectedAbsDestination)
 	if err != nil {
 		return nil, err
 	}
@@ -183,7 +197,7 @@ func (c Checker) checkLink(currentPath string, expectedLink entries.LinkEntry) (
 		difference = &Difference{
 			Path:        linkPath,
 			Expectation: "link points to " + expectedLink.Path,
-			Real:        "link points to " + linkDestination,
+			Real:        "link points to " + realDestination,
 		}
 		return difference, nil
 	}

@@ -183,7 +183,7 @@ func TestFile(t *testing.T) {
 }
 
 func TestLink(t *testing.T) {
-	t.Run("WithTheSamePathExists", func(t *testing.T) {
+	t.Run("SamePath", func(t *testing.T) {
 		rootPath, clean := createRoot()
 		defer clean()
 		createLink(rootPath, "link1", "./file.txt")
@@ -196,7 +196,20 @@ func TestLink(t *testing.T) {
 		requireTheSame(t, difference, err)
 	})
 
-	t.Run("WithAnotherPathExists", func(t *testing.T) {
+	t.Run("SameButAbsolutePath", func(t *testing.T) {
+		rootPath, clean := createRoot()
+		defer clean()
+		createLink(rootPath, "link1", path.Join(rootPath, "./file.txt"))
+
+		difference, err := performCheck(rootPath, entries.LinkEntry{
+			Name: "link1",
+			Path: "./file.txt",
+		})
+
+		requireTheSame(t, difference, err)
+	})
+
+	t.Run("AnotherPath", func(t *testing.T) {
 		rootPath, clean := createRoot()
 		defer clean()
 		linkPath := createLink(rootPath, "link1", "./another-file.txt")
@@ -210,7 +223,7 @@ func TestLink(t *testing.T) {
 		requireDifferentPath(t, linkPath, difference.Path)
 	})
 
-	t.Run("DoesntExist", func(t *testing.T) {
+	t.Run("LinkDoesntExist", func(t *testing.T) {
 		rootPath, clean := createRoot()
 		defer clean()
 
