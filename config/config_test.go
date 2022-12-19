@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/backdround/go-fstree/entries"
+	"github.com/backdround/go-fstree/v2/entries"
 	"github.com/lithammer/dedent"
 	"github.com/stretchr/testify/require"
 )

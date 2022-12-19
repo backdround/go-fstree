@@ -5,7 +5,7 @@ import (
 	"bytes"
 	"path"
 
-	"github.com/backdround/go-fstree/entries"
+	"github.com/backdround/go-fstree/v2/entries"
 )
 
 type Checker struct {

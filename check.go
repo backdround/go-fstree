@@ -1,9 +1,9 @@
 package fstree
 
 import (
-	"github.com/backdround/go-fstree/checker"
-	"github.com/backdround/go-fstree/config"
-	"github.com/backdround/go-fstree/osfs"
+	"github.com/backdround/go-fstree/v2/checker"
+	"github.com/backdround/go-fstree/v2/config"
+	"github.com/backdround/go-fstree/v2/osfs"
 )
 
 // CheckFS describes required interface for checking filetree.

@@ -1,4 +1,4 @@
-module github.com/backdround/go-fstree
+module github.com/backdround/go-fstree/v2
 
 go 1.19
 

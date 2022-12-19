@@ -19,7 +19,7 @@ import (
 	"fmt"
 	"path"
 
-	"github.com/backdround/go-fstree/entries"
+	"github.com/backdround/go-fstree/v2/entries"
 	"github.com/backdround/go-indent"
 	"gopkg.in/yaml.v3"
 )

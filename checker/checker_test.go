@@ -5,10 +5,10 @@ import (
 	"path"
 	"testing"
 
-	"github.com/backdround/go-fstree/osfs"
+	"github.com/backdround/go-fstree/v2/osfs"
 	"github.com/stretchr/testify/require"
 
-	"github.com/backdround/go-fstree/entries"
+	"github.com/backdround/go-fstree/v2/entries"
 )
 
 ////////////////////////////////////////////////////////////

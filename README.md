@@ -1,7 +1,7 @@
-[![Go Reference](https://img.shields.io/badge/go-reference-%2300ADD8?style=flat-square)](https://pkg.go.dev/github.com/backdround/go-fstree)
+[![Go Reference](https://img.shields.io/badge/go-reference-%2300ADD8?style=flat-square)](https://pkg.go.dev/github.com/backdround/go-fstree/v2)
 [![Tests](https://img.shields.io/github/actions/workflow/status/backdround/go-fstree/tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/backdround/go-fstree/actions)
-[![Codecov](https://img.shields.io/codecov/c/github/backdround/go-fstree?style=flat-square)](https://app.codecov.io/gh/backdround/go-fstree/)
-[![Go Report](https://goreportcard.com/badge/github.com/backdround/go-fstree?style=flat-square)](https://goreportcard.com/report/github.com/backdround/go-fstree)
+[![Codecov](https://img.shields.io/codecov/c/github/backdround/go-fstree?style=flat-square)](https://app.codecov.io/gh/backdround/go-fstree)
+[![Go Report](https://goreportcard.com/badge/github.com/backdround/go-fstree/v2?style=flat-square)](https://goreportcard.com/report/github.com/backdround/go-fstree/v2)
 
 # FSTree
 
@@ -14,7 +14,7 @@ It can:
 ### Installation
 
 ```bash
-go get github.com/backdround/go-fstree
+go get github.com/backdround/go-fstree/v2
 ```
 
 ### Example make fstree
@@ -26,7 +26,7 @@ import (
 	"log"
 	"strings"
 
-	"github.com/backdround/go-fstree"
+	"github.com/backdround/go-fstree/v2"
 )
 
 var fstreeYaml =`
@@ -74,7 +74,7 @@ import (
 	"log"
 	"strings"
 
-	"github.com/backdround/go-fstree"
+	"github.com/backdround/go-fstree/v2"
 )
 
 var fstreeYaml =`

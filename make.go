@@ -1,9 +1,9 @@
 package fstree
 
 import (
-	"github.com/backdround/go-fstree/config"
-	"github.com/backdround/go-fstree/maker"
-	"github.com/backdround/go-fstree/osfs"
+	"github.com/backdround/go-fstree/v2/config"
+	"github.com/backdround/go-fstree/v2/maker"
+	"github.com/backdround/go-fstree/v2/osfs"
 )
 
 // MakerFS describes required interface for making filetree.

@@ -3,7 +3,7 @@ package fstree_test
 import (
 	"testing"
 
-	"github.com/backdround/go-fstree"
+	"github.com/backdround/go-fstree/v2"
 	"github.com/stretchr/testify/require"
 )
 
