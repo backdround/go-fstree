@@ -2,7 +2,10 @@
 // filesystem by os package.
 package osfs
 
-import "os"
+import (
+	"os"
+	pathUtility "path"
+)
 
 type OsFS struct{}
 
@@ -47,6 +50,20 @@ func (OsFS) ReadDir(path string) (entryPaths []string, err error) {
 	}
 
 	return
+}
+
+func (OsFS) Abs(path string) (string, error) {
+	if pathUtility.IsAbs(path) {
+		return path, nil
+	}
+
+	wd, err := os.Getwd()
+	if err != nil {
+		return "", err
+	}
+
+	absPath := pathUtility.Join(wd, path)
+	return absPath, nil
 }
 
 func (OsFS) ReadFile(path string) ([]byte, error) {

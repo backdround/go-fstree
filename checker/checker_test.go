@@ -209,6 +209,26 @@ func TestLink(t *testing.T) {
 		requireTheSame(t, difference, err)
 	})
 
+	t.Run("SameButRootPathIsntAbsolutePath", func(t *testing.T) {
+		// Perpares test filetree
+		rootPath, clean := createRoot()
+		defer clean()
+		createLink(rootPath, "link1", path.Join(rootPath, "./file.txt"))
+
+		// Temporary switches work directory to test diretory
+		currentWorkDirectory, err := os.Getwd()
+		assertNoError(err)
+		os.Chdir(rootPath)
+		defer os.Chdir(currentWorkDirectory)
+
+		difference, err := performCheck(".", entries.LinkEntry{
+			Name: "link1",
+			Path: "./file.txt",
+		})
+
+		requireTheSame(t, difference, err)
+	})
+
 	t.Run("AnotherPath", func(t *testing.T) {
 		rootPath, clean := createRoot()
 		defer clean()
