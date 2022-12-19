@@ -1,3 +1,4 @@
+// Deprecated: use the latest version
 module github.com/backdround/go-fstree
 
 go 1.19
